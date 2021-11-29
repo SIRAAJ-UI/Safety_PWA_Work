@@ -1,5 +1,5 @@
 {
-  "name": "LIPTON JEBAL ALI",
+  "name": "lipton-jebal-ali",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -22,10 +22,8 @@
     "@angular/router": "~9.1.1",
     "@angular/service-worker": "~9.1.1",
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
-    "@ng-select/ng-option-highlight": "0.0.5",
     "@ng-select/ng-select": "^5.0.3",
     "bootstrap": "^5.1.3",
-    "http-server": "^14.0.0",
     "material-icons": "^1.10.3",
     "ngx-bootstrap": "^7.1.0",
     "rxjs": "~6.5.4",
