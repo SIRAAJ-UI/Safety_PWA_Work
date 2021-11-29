@@ -14,7 +14,9 @@ import { HomeComponent } from './home';;
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SafetyModule } from './safety/safety.module';;
 import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';;
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment'
 
 @NgModule({
     imports: [
@@ -25,7 +27,8 @@ import { FormsModule } from '@angular/forms';
         AppRoutingModule,
         SafetyModule,
         NgSelectModule,
-        NgbModule
+        NgbModule,
+        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     declarations: [
         AppComponent,
