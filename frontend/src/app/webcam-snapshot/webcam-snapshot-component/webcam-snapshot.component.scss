@@ -1,0 +1,56 @@
+.main-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+}
+.video-container{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: 2px dotted black;
+}
+.snap-container {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  
+  .list-unstyled {
+    list-style: none;
+  }
+  
+  .list-unstyled li {
+    display: inline-block;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .show {
+    display: block;
+  }
+  
+  .hide {
+    display: none;
+  }
+  
+  .preview-thumbnail{
+      width: 100%;
+      overflow-x: auto;
+      display: flex;
+      flex-direction: row;
+      .tile {
+          margin:10px;
+      }
+  }
+
+
+input[type="file"] {
+  display: none;
+}
+.custom-file-upload {
+    border: 1px dotted #ccc;
+    display: inline-block;
+    cursor: pointer;
+}

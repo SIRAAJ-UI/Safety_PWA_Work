@@ -1,0 +1,47 @@
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import 'material-icons/iconfont/material-icons.css';
+@import "~bootstrap/dist/css/bootstrap.css";
+
+
+$primary-bg:#F26725;
+$primary-light: #FEF1EB;
+$page-background:#F1F1F1;
+$text-field-border: #D9D8D8;
+$highlight-color:#F1F1F1;
+$text-light:#6E6B7B;
+$text-normal:#3C3C3C;
+$text-dark:#000000;
+
+@font-face {
+    font-family: 'poppins-regular';
+    src: url('assets/fonts/Poppins-Regular.ttf');
+}
+@font-face {
+    font-family: 'poppins-medium';
+    src: url('assets/fonts/Poppins-Medium.ttf');
+}
+html,body {
+    height: 100%;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'poppins-regular';
+    font-size: 13px;
+    background-color:#F7F7F7;
+    overflow-x: hidden;
+}
+
+.card-header{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.bd-navbar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1071;
+    min-height: 4rem;
+    background-color: #563d7c;
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 5%), inset 0 -1px 0 rgb(0 0 0 / 10%);
+}
