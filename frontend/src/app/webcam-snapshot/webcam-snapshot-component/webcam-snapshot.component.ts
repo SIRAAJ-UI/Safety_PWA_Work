@@ -1,4 +1,6 @@
 import {  Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { SafetyService } from '@app/_services/safety.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'webcam-snapshot-component',
@@ -10,13 +12,17 @@ export class WebcamSnapshotComponent  {
 
   @ViewChild("canvas")
   public canvas: ElementRef;
-
-  captures: string[] = [];
+  @ViewChild("AlertBox") AlertBox: any;
+  public captureIndex: number = 0;
+  public selectedCaptureId: number = null;
+  captures: any[] = [];
   error: any;
   isCaptured: boolean;
+  modalRef: BsModalRef;
+
+  constructor(private safetyService: SafetyService,private modalService: BsModalService) { }
 
   validateFileType(event) {
-    console.log(event.target.files[0])
     this.Main(event.target.files[0])
   }
 
@@ -28,7 +34,32 @@ export class WebcamSnapshotComponent  {
   });
 
   async Main(file) {
-    const values:any = await this.toBase64(file)
-    this.captures.push(values);
+    const blob:any = await this.toBase64(file)
+    let data = { id: ++this.captureIndex, source:blob}
+    this.captures.push(data);
+  }
+
+  onDeleteImage(captureId: number) {
+    this.selectedCaptureId = captureId;
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+    this.modalRef = this.modalService.show(this.AlertBox, {
+      backdrop: 'static',
+      keyboard: false,
+      class: 'gray modal-md'
+    });
+  }
+
+  yesToDelete() {
+    this.modalRef.hide();
+    const findIndex = this.captures.findIndex ( capture => capture.id === this.selectedCaptureId)
+    if(findIndex >= 0) {
+      this.captures.splice(findIndex,1)
+    }
+  }
+  noToDelete() {
+    this.selectedCaptureId = null;
+    this.modalRef.hide();
   }
 }

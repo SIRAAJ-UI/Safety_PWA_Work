@@ -1,3 +1,16 @@
+<ng-template #AlertBox let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Confirmation</h4>
+  </div>
+  <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+      <h5>Are you sure want to delete the image?</h5>
+  </div>
+  <div class="modal-footer d-flex justify-content-center">
+      <button type="button" class="btn btn-danger" style="width: 150px;" (click)="yesToDelete()">Yes</button>
+      <button type="button" class="btn btn-primary" style="width: 150px;" (click)="noToDelete()">No</button>
+
+  </div>
+</ng-template>
 <canvas [class.hide]=true #canvas id="canvas"></canvas>
 <div class="d-flex justify-content-center">
   <label for="file-upload" class="custom-file-upload">
@@ -8,7 +21,10 @@
 <div class="main-container">
   <div class="preview-thumbnail">
     <div class="tile" *ngFor="let capture of captures">
-      <img width="180" height="150" [src]="capture">
+      <div class="d-flex flex-column align-items-center">
+        <img width="180" height="150" [src]="capture?.source">
+        <span role="button" class="material-icons delete-icons" (click)="onDeleteImage(capture.id)">delete</span>
+      </div>
     </div>
   </div>
 </div>

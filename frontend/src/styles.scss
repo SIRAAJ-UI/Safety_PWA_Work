@@ -64,12 +64,15 @@ html,body {
     border-color:#0266d1;
 
 }
+.btn-danger {
+    padding:10px;
+}
 .btn-primary {
     background-color:#0266d1;
     padding:10px;
     color: white;
     &:hover {
-        background-color:#0266d1;
+        background-color:#09488b;
     }
 }
 .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
@@ -86,6 +89,14 @@ html,body {
 
 .camera-icons {
     font-size: 5em;
+    color:#F1B14F;
+    &:hover {
+        color:#FF7C6D;
+    }
+  }
+
+  .delete-icons {
+    font-size: 2em;
     color:#F1B14F;
     &:hover {
         color:#FF7C6D;
