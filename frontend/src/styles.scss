@@ -26,14 +26,13 @@ html,body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-family: 'poppins-regular';
-    font-size: 13px;
+    font-size: 16px;
     background-color:#F7F7F7;
     overflow-x: hidden;
 }
 
 .card-header{
     font-weight: bold;
-    font-size: 14px;
 }
 
 .bd-navbar {
@@ -41,48 +40,46 @@ html,body {
     position: sticky;
     top: 0;
     z-index: 1071;
-    min-height: 4rem;
-    background-color: #528D92;
+    min-height: 100px;
+    background-color: #0266d1;
     box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 5%), inset 0 -1px 0 rgb(0 0 0 / 10%);
 }
+.modal-header{
+    background-color: #0266d1;
+    color: white;
+}
+.modal-backdrop{
+    z-index: 1072;
 
-.brand-color {
-    background-color:#8C327D;
 }
-.dark-green {
-    background-color:#347355;
+.modal {
+    z-index: 1072;
 }
-.light-dark-green {
-    background-color:#89BF15;
-}
-.light-green {
-    background-color:#B8D971;
-}
-
 .card-header {
-    background-color:#6EBEC5;
-    color: black;
+    background-color:#0266d1;
+    color: white;
 }
 .btn {
-    border-bottom-color:#FF7C6D;
-    border-color:#FF7C6D;
+    border-bottom-color:#0266d1;
+    border-color:#0266d1;
 
 }
 .btn-primary {
-    background-color:#F1B14F;
+    background-color:#0266d1;
+    padding:10px;
     color: white;
     &:hover {
-        background-color:#FF7C6D;
+        background-color:#0266d1;
     }
 }
 .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
-    background-color:#F1B14F;
-    border-color:#FF7C6D;
+    background-color:#0266d1;
+    border-color:#0266d1;
 }
 .btn-check:focus + .btn-primary, .btn-primary:focus {
     color: #fff;
-    background-color:#F1B14F;
-    border-color:#FF7C6D;
+    background-color:#0266d1;
+    border-color:#0266d1;
     box-shadow: 0 0 0 0.25rem rgb(49 132 253 / 50%);
 }
 

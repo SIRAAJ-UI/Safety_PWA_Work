@@ -6,6 +6,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
 
+import { ModalModule } from 'ngx-bootstrap/modal';
+
+
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
@@ -15,7 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SafetyModule } from './safety/safety.module';;
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';;
-import { ServiceWorkerModule } from '@angular/service-worker';
+import { ServiceWorkerModule } from '@angular/service-worker'
+;
 import { environment } from '../environments/environment'
 
 @NgModule({
@@ -27,7 +31,8 @@ import { environment } from '../environments/environment'
         AppRoutingModule,
         SafetyModule,
         NgSelectModule,
-        NgbModule,
+        ModalModule.forRoot(),
+        NgbModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],
     declarations: [

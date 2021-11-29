@@ -1,4 +1,26 @@
-<div class="card shadow-sm">
+<ng-template #SuccessAlertBox let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Success</h4>
+    </div>
+    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+        <span class="material-icons-two-tone text-success" style="font-size: 50px;">
+            check
+        </span>
+        <h5>The reported has been logged successfully</h5>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+
+        <button type="button" class="btn btn-primary" style="width: 150px;" (click)="goToDasboard()">OK</button>
+    </div>
+</ng-template>
+
+<div *ngIf="!IsSafetyFormOpen">
+    <div class="hompage-container d-flex justify-content-center align-items-center">
+        <button type="submit"  (click)="openForm()" class="btn btn-md btn-primary w-40">SAFETY REPORTS</button>
+    </div>
+</div>
+
+<div class="card shadow-sm" *ngIf="IsSafetyFormOpen">
     <div class="card-header">Safety Forms</div>
     <form [formGroup]="safetyForm">
         <div class="card-body">
@@ -45,7 +67,7 @@
                 <webcam-snapshot-component></webcam-snapshot-component>
             </div>
             <div class="form-group mb-4 d-flex ">
-                <button type="submit" class="btn btn-md btn-primary flex-fill">Submit</button>
+                <button type="submit" (click)="onSubmit()" class="btn btn-md btn-primary flex-fill">Submit</button>
             </div>
         </div>
     </form>

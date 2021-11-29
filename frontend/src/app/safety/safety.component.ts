@@ -1,7 +1,9 @@
 import { HttpEventType } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SafetyService } from '@app/_services/safety.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+
 
 @Component({
   selector: 'app-safety',
@@ -17,6 +19,13 @@ export class SafetyComponent implements OnInit {
   public AreaLines: any[] = [];
   public Machines: any[] = [];
   public UnsafeDoneBy: any[] = [];
+  modalRef: BsModalRef;
+
+  @ViewChild("ErrorAlertBox") ErrorAlertBox: any;
+  @ViewChild("SuccessAlertBox") SuccessAlertBox: any;
+
+  public IsSafetyFormOpen: boolean = false;
+
   public safetyForm: FormGroup = new FormGroup(
     {
       ReportType: new FormControl("", [Validators.required]),
@@ -29,7 +38,7 @@ export class SafetyComponent implements OnInit {
 
     });
 
-  constructor(private safetyService: SafetyService) { }
+  constructor(private safetyService: SafetyService,private modalService: BsModalService) { }
 
   ngOnInit(): void {
 
@@ -94,4 +103,22 @@ export class SafetyComponent implements OnInit {
 
   }
 
+  openForm() {
+    this.IsSafetyFormOpen = true;
+  }
+  onSubmit(){
+    if (this.modalRef) {
+      this.modalRef.hide();
+    }
+    this.modalRef = this.modalService.show(this.SuccessAlertBox, {
+      backdrop: 'static',
+      keyboard: false,
+      class: 'gray modal-md'
+    });
+  }
+
+  goToDasboard() {
+    this.modalRef.hide();
+    this.IsSafetyFormOpen = false;
+  }
 }
