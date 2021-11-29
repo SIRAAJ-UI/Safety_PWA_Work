@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-9-registration-login-example": {
+    "safety": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
