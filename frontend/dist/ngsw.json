@@ -1,0 +1,116 @@
+{
+  "configVersion": 1,
+  "timestamp": 1638198842548,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/5-es2015.a289c8e51a4d361577d1.js",
+        "/5-es5.a289c8e51a4d361577d1.js",
+        "/6-es2015.fceef7683a6958caf932.js",
+        "/6-es5.fceef7683a6958caf932.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main-es2015.3bbb3506671ebc86c4a4.js",
+        "/main-es5.3bbb3506671ebc86c4a4.js",
+        "/manifest.webmanifest",
+        "/polyfills-es2015.9ddf7ee8e3f42b05c6a4.js",
+        "/polyfills-es5.2e81182f473bf5c1d6ac.js",
+        "/runtime-es2015.9488b7cda3f7e60eedc8.js",
+        "/runtime-es5.9488b7cda3f7e60eedc8.js",
+        "/styles.aaf135e5e5cdae2613c1.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "/Poppins-Medium.9e1bb626874ed49aa343.ttf",
+        "/Poppins-Regular.8081832fc5cfbf634aa6.ttf",
+        "/assets/fonts/Poppins-Medium.ttf",
+        "/assets/fonts/Poppins-Regular.ttf",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/material-icons-outlined.3cb0d2539b892774895a.woff2",
+        "/material-icons-outlined.99d2e314c507975574de.woff",
+        "/material-icons-round.6d2f0cb7a39c53cb836c.woff",
+        "/material-icons-round.e8600905e57d2bfc96ec.woff2",
+        "/material-icons-sharp.cb3a74604ebb3ad2c534.woff",
+        "/material-icons-sharp.e1c8de28366630660623.woff2",
+        "/material-icons-two-tone.65c6d5572ca129d0ad3b.woff2",
+        "/material-icons-two-tone.d27ea473d49b838b2b3a.woff",
+        "/material-icons.9340a24a24a1726f5c08.woff2",
+        "/material-icons.f044e5df83c21beda57c.woff"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/5-es2015.a289c8e51a4d361577d1.js": "059604f96fe34d4c7a9512f942203938ccbcc659",
+    "/5-es5.a289c8e51a4d361577d1.js": "95b92de2d98ba720e4aa8c35ce7bfdccf259eb9f",
+    "/6-es2015.fceef7683a6958caf932.js": "3b51bdf6d075a041e3d37d7ddc67209de96b4f42",
+    "/6-es5.fceef7683a6958caf932.js": "f14228e17f0a06a8a776177164d2ba803071af94",
+    "/Poppins-Medium.9e1bb626874ed49aa343.ttf": "af7058373acbcf383dd114b8f9bbfb9faafd79eb",
+    "/Poppins-Regular.8081832fc5cfbf634aa6.ttf": "01d319c533f62ea29f03b5df8adfd4d93d2d2a38",
+    "/assets/fonts/Poppins-Medium.ttf": "af7058373acbcf383dd114b8f9bbfb9faafd79eb",
+    "/assets/fonts/Poppins-Regular.ttf": "01d319c533f62ea29f03b5df8adfd4d93d2d2a38",
+    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
+    "/index.html": "665239e01313785518148a8d5ce8144cc97a710d",
+    "/main-es2015.3bbb3506671ebc86c4a4.js": "7476563f15d69727250e215955a751c2fd774e78",
+    "/main-es5.3bbb3506671ebc86c4a4.js": "fba12b53e33920751dff6a2c4d05ab2e9bf94898",
+    "/manifest.webmanifest": "20707f8a0266049a247e26a457ac5f4a6a486390",
+    "/material-icons-outlined.3cb0d2539b892774895a.woff2": "b83aec9cceb453c24574d43f1ef4fde2a40eea65",
+    "/material-icons-outlined.99d2e314c507975574de.woff": "f0c6c59cdeda3ba8d764b29d621d757750acaeb8",
+    "/material-icons-round.6d2f0cb7a39c53cb836c.woff": "3808bc85030ccb1b4b879b713616773a8bf167ce",
+    "/material-icons-round.e8600905e57d2bfc96ec.woff2": "d8e23c4b9f90ce1aeb03ae4af5ef246f935fc936",
+    "/material-icons-sharp.cb3a74604ebb3ad2c534.woff": "6d75f44908bd2119cfef21c0e179f24194fa766f",
+    "/material-icons-sharp.e1c8de28366630660623.woff2": "65cb144d2ff195053f8cb8855eb688bdc22e25ff",
+    "/material-icons-two-tone.65c6d5572ca129d0ad3b.woff2": "d879d0d211785feae07ca9542615a03ecbb32a12",
+    "/material-icons-two-tone.d27ea473d49b838b2b3a.woff": "64fa612021cdf326ea352e5ee8e955490f2198a8",
+    "/material-icons.9340a24a24a1726f5c08.woff2": "a80466bc637c657f0dc739e0924b025034a92ea9",
+    "/material-icons.f044e5df83c21beda57c.woff": "7f80438ea8c888393074a581b2c03f41fd05626e",
+    "/polyfills-es2015.9ddf7ee8e3f42b05c6a4.js": "90fb474e1a7d87bd57bc8a95fb3fd361b919d815",
+    "/polyfills-es5.2e81182f473bf5c1d6ac.js": "2169a8f7eac1f1899a657e859de525fa80e57a22",
+    "/runtime-es2015.9488b7cda3f7e60eedc8.js": "e67071d701f8481d52380647975a80d341197667",
+    "/runtime-es5.9488b7cda3f7e60eedc8.js": "3e679f83bace11535cf4f1170c729090592252c2",
+    "/styles.aaf135e5e5cdae2613c1.css": "49c5f6b783f13dea8794a0e72023d32a2530c341"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}
