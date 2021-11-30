@@ -1,4 +1,4 @@
-import {  Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {  Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { SafetyService } from '@app/_services/safety.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
@@ -13,6 +13,7 @@ export class WebcamSnapshotComponent  {
   @ViewChild("canvas")
   public canvas: ElementRef;
   @ViewChild("AlertBox") AlertBox: any;
+  @Output("UpdateBlobImages") UpdateBlobImages:EventEmitter<Array<string>> = new EventEmitter();
   public captureIndex: number = 0;
   public selectedCaptureId: number = null;
   captures: any[] = [];
@@ -37,6 +38,7 @@ export class WebcamSnapshotComponent  {
     const blob:any = await this.toBase64(file)
     let data = { id: ++this.captureIndex, source:blob}
     this.captures.push(data);
+    this.UpdateBlobImages.emit(this.captures);
   }
 
   onDeleteImage(captureId: number) {
@@ -57,9 +59,12 @@ export class WebcamSnapshotComponent  {
     if(findIndex >= 0) {
       this.captures.splice(findIndex,1)
     }
+    this.UpdateBlobImages.emit(this.captures);
   }
   noToDelete() {
     this.selectedCaptureId = null;
     this.modalRef.hide();
   }
 }
+
+

@@ -26,8 +26,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return register();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
-                case url.endsWith('/GetReportType') && method === 'GET':
-                    return GetReportType();
+                // case url.endsWith('/GetReportType') && method === 'GET':
+                //     return GetReportType();
                 case url.endsWith('/GetClass') && method === 'GET':
                     return GetClass();
                 case url.endsWith('/GetReportedBy') && method === 'GET':

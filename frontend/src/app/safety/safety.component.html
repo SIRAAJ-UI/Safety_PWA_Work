@@ -9,62 +9,79 @@
         <h5>The reported has been logged successfully</h5>
     </div>
     <div class="modal-footer d-flex justify-content-center">
-
         <button type="button" class="btn btn-primary" style="width: 150px;" (click)="goToDasboard()">OK</button>
     </div>
 </ng-template>
 
-<div *ngIf="!IsSafetyFormOpen">
+<ng-template #ErrorAlertBox let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title text-danger">Error</h4>
+    </div>
+    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+        <span class="material-icons-outlined" style="font-size: 40px; color:red">
+            report_problem
+        </span>
+        <h5 class="text-danger">The reported was not logged on successfully.</h5>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary" style="width: 150px;" (click)="modalRef.hide()">OK</button>
+    </div>
+</ng-template>
+
+<div *ngIf="!IsSafetyReportFormOpen">
     <div class="hompage-container d-flex justify-content-center align-items-center">
-        <button type="submit"  (click)="openForm()" class="btn btn-md btn-primary w-40">SAFETY REPORTS</button>
+        <button type="submit" (click)="openForm()" class="btn btn-md btn-primary w-40">SAFETY REPORTS</button>
     </div>
 </div>
 
-<div class="card shadow-sm" *ngIf="IsSafetyFormOpen">
-    <div class="card-header">Safety Forms</div>
-    <form [formGroup]="safetyForm">
+<div class="card shadow-sm" *ngIf="IsSafetyReportFormOpen">
+    <div class="card-header">SAFETY REPORT</div>
+    <form [formGroup]="SafetyReportForm">
         <div class="card-body">
             <div class="form-group mb-2">
                 <label>Report Type</label>
-                <ng-select [items]="ReportTypes" bindLabel="ReportType" bindValue="ReportId"
-                    formControlName="ReportType" dropdownPosition="bottom">
+                <ng-select [items]="ReportTypes" bindLabel="ReportTypeName" [searchable]="false" [clearable]="false"
+                    bindValue="ReportTypeCnfgId" formControlName="ReportTypeCnfgId" (change)="onReportTypeChange()"
+                    dropdownPosition="bottom">
                 </ng-select>
             </div>
             <div class="form-group mb-2">
                 <label>Class</label>
-                <ng-select [items]="GetClass" bindLabel="ClassType" bindValue="ClassId" formControlName="ClassId"
-                    dropdownPosition="bottom">
+                <ng-select [items]="GetClass" bindLabel="ClassName" bindValue="ClassCnfgId" [searchable]="false"
+                    [clearable]="false" formControlName="ClassCnfgId" dropdownPosition="bottom">
                 </ng-select>
-
             </div>
 
             <div class="form-group mb-2">
                 <label>Reported by (default logged in user)</label>
-                <ng-select [items]="ReportedBy" bindLabel="name" formControlName="ReportedBy" bindValue="id">
+                <ng-select [items]="ReportedBy" bindValue="UserProfileId" bindLabel="UserName"
+                    formControlName="ReportedById" (change)="onReportByChange()" dropdownPosition="bottom">
                 </ng-select>
             </div>
 
             <div class="form-group mb-2">
                 <label>Area / Line</label>
-                <ng-select [items]="AreaLines" bindLabel="area" formControlName="AreaLine" bindValue="Id">
+                <ng-select [items]="AreaLines" bindValue="AreaLineCnfgId" bindLabel="AreaLineName"
+                    formControlName="AreaLineCnfgId" [searchable]="false" [clearable]="false" dropdownPosition="bottom"
+                    (change)="onChangeAreaLineCode()">
                 </ng-select>
             </div>
             <div class="form-group mb-2">
                 <label>Machine</label>
-                <ng-select [items]="Machines" bindLabel="name" formControlName="Machine" bindValue="Id">
+                <ng-select [items]="Machines" bindValue="MachineCnfgId" bindLabel="MachineName"
+                    formControlName="MachineCnfgId" dropdownPosition="bottom">
                 </ng-select>
             </div>
-            <div class="form-group mb-2">
+            <div *ngIf="IsUnsafeDoneBy" class="form-group mb-2">
                 <label>Unsafe Act done by</label>
-                <ng-select [items]="UnsafeDoneBy" bindLabel="name" formControlName="UnsafeDoneBy" bindValue="Id">
-                </ng-select>
+                <input class="form-control" type="text" formControlName="UnsafeActDoneBy">
             </div>
             <div class="form-group mb-4">
                 <label for="desc">Description</label>
                 <textarea class="form-control" id="desc" rows="3" formControlName="Description"></textarea>
             </div>
             <div class="form-group mb-4">
-                <webcam-snapshot-component></webcam-snapshot-component>
+                <webcam-snapshot-component (UpdateBlobImages)="onUpdateFormImages($event)"></webcam-snapshot-component>
             </div>
             <div class="form-group mb-4 d-flex ">
                 <button type="submit" (click)="onSubmit()" class="btn btn-md btn-primary flex-fill">Submit</button>

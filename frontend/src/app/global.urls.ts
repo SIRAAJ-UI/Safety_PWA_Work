@@ -1,9 +1,12 @@
+import { environment } from "@environments/environment";
+
 
 export class AccountAPIUrls {
-  static GetReportType: string = "api/Master/GetReportType";
-  static GetClass: string = "api/Master/GetClass";
-  static GetReportedBy: string = "api/Master/GetReportedBy";
-  static GetAreaLine: string = "api/Master/GetAreaLine";
-  static GetMachine: string = "api/Master/GetMachine";
-  static GetUnsafeDoneBy: string = "api/Master/GetUnsafeDoneBy";
+  static GetReportType: string = `${environment.apiUrl}/api/ReportTypeCnfg/GetAll`;
+  static GetClass: string = `${environment.apiUrl}/api/ClassCnfg/GetAll`;
+  static GetReportedBy: string = `${environment.apiUrl}/api/UserProfile/GetAll`;
+  static GetAreaLine: string = `${environment.apiUrl}/api/AreaLineCnfg/GetAll`;
+  static GetMachine: string = `${environment.apiUrl}/api/MachineCnfg/GetAllByAreaLineId`;
+  static GetUnsafeDoneBy: string = `${environment.apiUrl}/api/UserProfile/GetAll`;
+  static SaveReportsDetails: string = `${environment.apiUrl}/api/ReportsDetails/save`;
 }

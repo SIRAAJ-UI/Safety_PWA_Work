@@ -1,7 +1,10 @@
 ﻿<!-- nav -->
 <nav class="navbar navbar-expand navbar-dark d-flex justify-content-between p-2 bd-navbar brand-color" *ngIf="user">
-    <div class="text-white">
+    <div class="text-white d-flex align-items-center">
         <img src="assets/icons/logo.png" alt="">
+        <div style="margin-left: 15px;">
+            <h4 class="h4 m-0" >SAFETY REPORT</h4>
+        </div>
     </div>
     <div class="navbar-nav">
         <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>

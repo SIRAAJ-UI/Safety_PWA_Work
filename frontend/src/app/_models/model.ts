@@ -5,18 +5,49 @@
 // static GetMachine: string = "api/Master/GetMachine";
 // static GetUnsafeDoneBy: string = "api/Master/GetUnsafeDoneBy";
 
-
-export class ReportType {
+export class ReportType  {
+    ReportTypeCnfgId: number;
+    ReportTypeName: string;
+    PrefixCode: string;
+    ActiveFlag: boolean;
 }
 export class GetClass {
+    ClassCnfgId: number;
+    ClassName: string;
+    ActiveFlag: boolean;
+   
 }
-export class ReportedBy {
-}
-export class AreaLine {
-}
-export class Machine {
+export class UserProfile {
+    UserProfileId: number;
+    UserName: string;
+    FirstName: string;
+    LastName: string;
+    Email: string;
+    PhoneNo: string;
+    ActiveFlag: boolean;
 }
 
-export class UnsafeDoneBy{
-    
+export class AreaLine {
+    AreaLineCnfgId: number;
+    AreaLineName: string;
+    ActiveFlag: boolean;
+}
+export class Machine  {
+    MachineCnfgId: number;
+    MachineName: string;
+    AreaLineCnfgId: number;
+    ActiveFlag: boolean;
+}
+
+export class SaveRecord {
+    ReportTypeCnfgId: number;
+    ClassCnfgId: number;
+    ReportedById: number;
+    AreaLineCnfgId: number;
+    MachineCnfgId: number;
+    UnsafeActDoneBy: string;
+    Description: string;
+    CreatedUserId: number;
+    UpdatedUserId: number;
+    ReportsImages:Array<string>;
 }

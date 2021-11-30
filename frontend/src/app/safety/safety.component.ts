@@ -1,6 +1,7 @@
 import { HttpEventType } from '@angular/common/http';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AreaLine, GetClass, Machine, ReportType, SaveRecord, UserProfile } from '@app/_models/model';
 import { SafetyService } from '@app/_services/safety.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
@@ -13,32 +14,32 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 export class SafetyComponent implements OnInit {
 
   private subscribes: any[] = [];
-  public ReportTypes: any[] = [];
-  public GetClass: any[] = [];
-  public ReportedBy: any[] = [];
-  public AreaLines: any[] = [];
-  public Machines: any[] = [];
-  public UnsafeDoneBy: any[] = [];
+  public ReportTypes: Array<ReportType>;
+  public GetClass: Array<GetClass>;
+  public ReportedBy: Array<UserProfile>
+  public AreaLines: Array<AreaLine> = [];
+  public Machines: Array<Machine> = [];
+  public IsUnsafeDoneBy: boolean = false;
   modalRef: BsModalRef;
-
   @ViewChild("ErrorAlertBox") ErrorAlertBox: any;
   @ViewChild("SuccessAlertBox") SuccessAlertBox: any;
+  public IsSafetyReportFormOpen: boolean = false;
 
-  public IsSafetyFormOpen: boolean = false;
-
-  public safetyForm: FormGroup = new FormGroup(
+  public SafetyReportForm: FormGroup = new FormGroup(
     {
-      ReportType: new FormControl("", [Validators.required]),
-      ClassId: new FormControl("", [Validators.required]),
-      ReportedBy: new FormControl("", [Validators.required]),
-      AreaLine: new FormControl("", [Validators.required]),
-      Machine: new FormControl("", [Validators.required]),
-      UnsafeDoneBy: new FormControl("", [Validators.required]),
-      Description: new FormControl("", [Validators.required])
-
+      ReportTypeCnfgId: new FormControl("", [Validators.required]),
+      ClassCnfgId: new FormControl("", [Validators.required]),
+      ReportedById: new FormControl("", [Validators.required]),
+      AreaLineCnfgId: new FormControl("", [Validators.required]),
+      MachineCnfgId: new FormControl("", [Validators.required]),
+      UnsafeActDoneBy: new FormControl("", [Validators.required]),
+      Description: new FormControl("", [Validators.required]),
+      ReportsImages: new FormControl([], [Validators.required]),
+      CreatedUserId: new FormControl('', [Validators.required]),
+      UpdatedUserId: new FormControl('', [Validators.required]),
     });
 
-  constructor(private safetyService: SafetyService,private modalService: BsModalService) { }
+  constructor(private safetyService: SafetyService, private modalService: BsModalService) { }
 
   ngOnInit(): void {
 
@@ -47,7 +48,10 @@ export class SafetyComponent implements OnInit {
         if (response.type == HttpEventType.DownloadProgress) {
         } else if (response.type === HttpEventType.Response) {
           if (typeof response.body !== 'undefined' && response.body !== null) {
-            this.ReportTypes = response.body;
+            const isActiveFlags = response.body.filter((item: ReportType) => {
+              return (item.ActiveFlag === true)
+            })
+            this.ReportTypes = isActiveFlags;
           }
         }
       }),
@@ -55,7 +59,10 @@ export class SafetyComponent implements OnInit {
         if (response.type == HttpEventType.DownloadProgress) {
         } else if (response.type === HttpEventType.Response) {
           if (typeof response.body !== 'undefined' && response.body !== null) {
-            this.GetClass = response.body;
+            const isActiveFlags = response.body.filter((item: ReportType) => {
+              return (item.ActiveFlag === true)
+            })
+            this.GetClass = isActiveFlags;
           }
         }
       }),
@@ -63,9 +70,10 @@ export class SafetyComponent implements OnInit {
         if (response.type == HttpEventType.DownloadProgress) {
         } else if (response.type === HttpEventType.Response) {
           if (typeof response.body !== 'undefined' && response.body !== null) {
-            this.ReportedBy = response.body;
-            console.log(this.ReportedBy)
-
+            const isActiveFlags = response.body.filter((item: ReportType) => {
+              return (item.ActiveFlag === true)
+            })
+            this.ReportedBy = isActiveFlags;
           }
         }
       }),
@@ -73,52 +81,118 @@ export class SafetyComponent implements OnInit {
         if (response.type == HttpEventType.DownloadProgress) {
         } else if (response.type === HttpEventType.Response) {
           if (typeof response.body !== 'undefined' && response.body !== null) {
-            this.AreaLines = response.body;
-            console.log(this.AreaLines)
-
-          }
-        }
-      }),
-      this.safetyService.GetMachine().subscribe(response => {
-        if (response.type == HttpEventType.DownloadProgress) {
-        } else if (response.type === HttpEventType.Response) {
-          if (typeof response.body !== 'undefined' && response.body !== null) {
-            this.Machines = response.body;
-            console.log(this.Machines)
-
-          }
-        }
-      }),
-      this.safetyService.GetUnsafeDoneBy().subscribe(response => {
-        if (response.type == HttpEventType.DownloadProgress) {
-        } else if (response.type === HttpEventType.Response) {
-          if (typeof response.body !== 'undefined' && response.body !== null) {
-            this.UnsafeDoneBy = response.body;
-            console.log(this.UnsafeDoneBy)
-
+            const isActiveFlags = response.body.filter((item: ReportType) => {
+              return (item.ActiveFlag === true)
+            })
+            this.AreaLines = isActiveFlags;
           }
         }
       })
+      // this.safetyService.GetUnsafeDoneBy().subscribe(response => {
+      //   if (response.type == HttpEventType.DownloadProgress) {
+      //   } else if (response.type === HttpEventType.Response) {
+      //     if (typeof response.body !== 'undefined' && response.body !== null) {
+      //       this.UnsafeDoneBy = response.body;
+      //       console.log(this.UnsafeDoneBy)
+      //     }
+      //   }
+      // })
     )
-
   }
 
-  openForm() {
-    this.IsSafetyFormOpen = true;
+  onUpdateFormImages(blobImages: Array<string>) {
+    this.SafetyReportForm.get("ReportsImages").setValue(blobImages);
   }
-  onSubmit(){
-    if (this.modalRef) {
-      this.modalRef.hide();
+  onReportByChange() {
+    const ReportedTypeId = this.SafetyReportForm.get("ReportedById").value;
+    this.SafetyReportForm.get("CreatedUserId").setValue(ReportedTypeId);
+    this.SafetyReportForm.get("UpdatedUserId").setValue(ReportedTypeId);
+  }
+  onReportTypeChange() {
+    const ReportTypeId = this.SafetyReportForm.get("ReportTypeCnfgId").value;
+    if (ReportTypeId === 1) {
+      this.IsUnsafeDoneBy = true;
+    } else {
+      this.IsUnsafeDoneBy = false;
     }
-    this.modalRef = this.modalService.show(this.SuccessAlertBox, {
-      backdrop: 'static',
-      keyboard: false,
-      class: 'gray modal-md'
-    });
+
+  }
+  onChangeAreaLineCode() {
+    const areaLineCode = this.SafetyReportForm.get("AreaLineCnfgId").value;
+    this.safetyService.GetMachine(areaLineCode).subscribe(response => {
+      if (response.type == HttpEventType.DownloadProgress) {
+      } else if (response.type === HttpEventType.Response) {
+        if (typeof response.body !== 'undefined' && response.body !== null) {
+          const isActiveFlags = response.body.filter((item: ReportType) => {
+            return (item.ActiveFlag === true)
+          })
+          this.Machines = isActiveFlags;
+        }
+      }
+    })
+  }
+  openForm() {
+    this.IsSafetyReportFormOpen = true;
+  }
+  onSubmit() {
+    console.log(this.SafetyReportForm.value);
+
+    const {
+      ReportTypeCnfgId,
+      ClassCnfgId,
+      ReportedById,
+      AreaLineCnfgId,
+      MachineCnfgId,
+      UnsafeActDoneBy,
+      Description,
+      CreatedUserId,
+      UpdatedUserId,
+      ReportsImages
+    } = this.SafetyReportForm.value;
+    const saveRecord: SaveRecord = new SaveRecord();
+    saveRecord.ReportTypeCnfgId = ReportTypeCnfgId;
+    saveRecord.ClassCnfgId = ClassCnfgId;
+    saveRecord.ReportedById = ReportedById;
+    saveRecord.AreaLineCnfgId = AreaLineCnfgId;
+    saveRecord.MachineCnfgId = MachineCnfgId;
+    saveRecord.UnsafeActDoneBy = UnsafeActDoneBy; 
+    saveRecord.Description = Description;
+    saveRecord.CreatedUserId = Description;
+    saveRecord.UpdatedUserId = UpdatedUserId;
+    saveRecord.ReportsImages = ReportsImages;
+    saveRecord.CreatedUserId = CreatedUserId;
+
+    this.safetyService.SaveRecord(saveRecord).subscribe(response => {
+      if (response.type == HttpEventType.DownloadProgress) {
+      } else if (response.type === HttpEventType.Response) {
+        if (typeof response.body !== 'undefined' && response.body !== null) {
+          const { ErrorMessage }  = response.body;
+          if(ErrorMessage === null){
+            if (this.modalRef) {
+              this.modalRef.hide();
+            }
+            this.modalRef = this.modalService.show(this.SuccessAlertBox, {
+              backdrop: 'static',
+              keyboard: false,
+              class: 'gray modal-md'
+            });
+          } else {
+            if (this.modalRef) {
+              this.modalRef.hide();
+            }
+            this.modalRef = this.modalService.show(this.ErrorAlertBox, {
+              backdrop: 'static',
+              keyboard: false,
+              class: 'gray modal-md'
+            });
+          }
+        }
+      }
+    })
   }
 
   goToDasboard() {
     this.modalRef.hide();
-    this.IsSafetyFormOpen = false;
+    this.IsSafetyReportFormOpen = false;
   }
 }

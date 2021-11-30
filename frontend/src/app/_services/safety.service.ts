@@ -2,7 +2,7 @@ import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AccountAPIUrls } from '@app/global.urls';
 import { Observable } from 'rxjs';
-import { ReportType } from '../_models/model'
+import { ReportType, SaveRecord } from '../_models/model'
 
 @Injectable({
   providedIn: 'root'
@@ -30,14 +30,19 @@ export class SafetyService {
     return this.httpClient.request(getRequest);
   };
 
-  GetMachine(): Observable<HttpEvent<any>> {
-    const getRequest: HttpRequest<any> = new HttpRequest('GET', AccountAPIUrls.GetMachine);
+  GetMachine(areaLineId: number): Observable<HttpEvent<any>> {
+    const getRequest: HttpRequest<any> = new HttpRequest('GET',`${AccountAPIUrls.GetMachine}/${areaLineId}`);
     return this.httpClient.request(getRequest);
   };
 
   GetUnsafeDoneBy(): Observable<HttpEvent<any>> {
     const getRequest: HttpRequest<any> = new HttpRequest('GET', AccountAPIUrls.GetUnsafeDoneBy);
     return this.httpClient.request(getRequest);
+  };
+
+  SaveRecord(model:SaveRecord): Observable<HttpEvent<any>> {
+    const postRequest: HttpRequest<any> = new HttpRequest('POST', AccountAPIUrls.SaveReportsDetails,model);
+    return this.httpClient.request(postRequest);
   };
 
 }
