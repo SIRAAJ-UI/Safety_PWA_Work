@@ -22,22 +22,20 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             switch (true) {
                 case url.endsWith('/users/authenticate') && method === 'POST':
                     return authenticate();
-                case url.endsWith('/users/register') && method === 'POST':
-                    return register();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
-                // case url.endsWith('/GetReportType') && method === 'GET':
-                //     return GetReportType();
-                case url.endsWith('/GetClass') && method === 'GET':
-                    return GetClass();
-                case url.endsWith('/GetReportedBy') && method === 'GET':
-                    return GetReportedBy();
-                case url.endsWith('/GetAreaLine') && method === 'GET':
-                    return GetAreaLine();
-                case url.endsWith('/GetMachine') && method === 'GET':
-                    return GetMachine();
-                case url.endsWith('/GetUnsafeDoneBy') && method === 'GET':
-                    return GetUnsafeDoneBy();
+                // case url.endsWith('/ReportTypeCnfg/GetAll') && method === 'GET':
+                //     return getReportTypeCnfg();
+                // case url.endsWith('/ClassCnfg/GetAll') && method === 'GET':
+                //     return getClassCnfg();
+                // case url.endsWith('/ReportTypeCnfg/GetAll') && method === 'GET':
+                //     return getReportTypeCnfg();
+                // case url.endsWith('/UserProfile') && method === 'GET':
+                //     return UserProfile();
+                // case url.endsWith('/AreaLineCnfg/GetAll') && method === 'GET':
+                //     return getAreaLineCnfg();
+                // case url.endsWith('/ReportTypeCnfg/GetAll') && method === 'GET':
+                //     return getReportTypeCnfg();
                 case url.match(/\/users\/\d+$/) && method === 'GET':
                     return getUserById();
                 case url.match(/\/users\/\d+$/) && method === 'PUT':
@@ -54,17 +52,17 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function authenticate() {
             const { username, password } = body;
+            const users = [{"username":"admin","password":"1"}]
             const user = users.find(x => x.username === username && x.password === password);
             if (!user) return error('Username or password is incorrect');
             return ok({
-                id: user.id,
                 username: user.username,
-                firstName: user.firstName,
-                lastName: user.lastName,
                 token: 'fake-jwt-token'
             })
         }
+        function getReportTypeCnfg(){
 
+        }
         function register() {
             const user = body
 

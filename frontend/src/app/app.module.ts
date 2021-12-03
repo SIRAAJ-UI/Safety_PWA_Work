@@ -15,12 +15,31 @@ import { AppComponent } from './app.component';
 import { AlertComponent } from './_components';
 import { HomeComponent } from './home';;
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SafetyModule } from './safety/safety.module';;
+import { SafetyModule } from './safety/safety.module';
+import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';;
-import { ServiceWorkerModule } from '@angular/service-worker'
-;
-import { environment } from '../environments/environment'
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+
+  
+const dbConfig: DBConfig  = {
+    name: 'SAFETY_REPORTS',
+    version: 1,
+    objectStoresMeta: [{
+      store: 'OFFLINE_RECORDS',
+      storeConfig: { keyPath: 'id', autoIncrement: true },
+      storeSchema: [
+        { name: 'ReportTypes', keypath: 'ReportTypes', options: { unique: true } },
+        { name: 'Classes', keypath: 'Classes', options: { unique: true } },
+        { name: 'ReportedBy', keypath: 'ReportedBy', options: { unique: true } },
+        { name: 'AreaLines', keypath: 'AreaLines', options: { unique: true } },
+        { name: 'Machines', keypath: 'Machines', options: { unique: true } },
+      ]
+    }]
+  };
+  
 
 @NgModule({
     imports: [
@@ -32,6 +51,7 @@ import { environment } from '../environments/environment'
         SafetyModule,
         NgSelectModule,
         ModalModule.forRoot(),
+        NgxIndexedDBModule.forRoot(dbConfig),
         NgbModule,
         ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
     ],

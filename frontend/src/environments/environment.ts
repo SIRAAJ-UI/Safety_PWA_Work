@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    apiUrl: 'http://ljasafety.com/safetyreportapi'
+    apiUrl: 'https://ljasafety.com/safetyreportapi'
 };
 
 /*
