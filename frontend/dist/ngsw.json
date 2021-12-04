@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1638557241361,
+  "timestamp": 1638611546408,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -8,19 +8,19 @@
       "installMode": "prefetch",
       "updateMode": "prefetch",
       "urls": [
-        "/5-es2015.0be4e84272a75b1f89ab.js",
-        "/5-es5.0be4e84272a75b1f89ab.js",
+        "/5-es2015.fd616ed6d6a7ff7668dd.js",
+        "/5-es5.fd616ed6d6a7ff7668dd.js",
         "/6-es2015.808ea6e787a9897166b9.js",
         "/6-es5.808ea6e787a9897166b9.js",
         "/favicon.ico",
         "/index.html",
-        "/main-es2015.86a0f110f8c001953466.js",
-        "/main-es5.86a0f110f8c001953466.js",
+        "/main-es2015.dd981bd6cf951537c5cb.js",
+        "/main-es5.dd981bd6cf951537c5cb.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.7f2be5c3211715ed096a.js",
         "/polyfills-es5.28f12a96904b8f2b6d42.js",
-        "/runtime-es2015.8de970e8ec626174744b.js",
-        "/runtime-es5.8de970e8ec626174744b.js",
+        "/runtime-es2015.09150c98bb8285324a9e.js",
+        "/runtime-es5.09150c98bb8285324a9e.js",
         "/styles.b6fa236bece05381fbf1.css"
       ],
       "patterns": []
@@ -43,6 +43,7 @@
         "/assets/icons/icon-72x72.png",
         "/assets/icons/icon-96x96.png",
         "/assets/icons/logo.png",
+        "/assets/icons/wifi.svg",
         "/material-icons-outlined.3cb0d2539b892774895a.woff2",
         "/material-icons-outlined.99d2e314c507975574de.woff",
         "/material-icons-round.6d2f0cb7a39c53cb836c.woff",
@@ -59,8 +60,8 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/5-es2015.0be4e84272a75b1f89ab.js": "ba6e06759a6caec197115749e29f6b67ae1c6c40",
-    "/5-es5.0be4e84272a75b1f89ab.js": "71bae2fd7b047346be2f2efefc3254b1ea791ce2",
+    "/5-es2015.fd616ed6d6a7ff7668dd.js": "74af44f4c189b129396c57568b37c64a418524e9",
+    "/5-es5.fd616ed6d6a7ff7668dd.js": "f275bcf9dfd01e266a2bbc0964c346a35891acb3",
     "/6-es2015.808ea6e787a9897166b9.js": "3e8f069af428f09270eba110d78cb53e1c915083",
     "/6-es5.808ea6e787a9897166b9.js": "b6765a19a0ad5fd9c5140ad2ee04df6f3647e7fd",
     "/Poppins-Medium.9e1bb626874ed49aa343.ttf": "af7058373acbcf383dd114b8f9bbfb9faafd79eb",
@@ -76,10 +77,11 @@
     "/assets/icons/icon-72x72.png": "86b3263a68a26aa89bebf2bf677a7dfade4b3024",
     "/assets/icons/icon-96x96.png": "8c0448400c534afb2461ee236b85e235d569527e",
     "/assets/icons/logo.png": "954652d4345cb18e2d3a674e3888239f5f1c1a8a",
+    "/assets/icons/wifi.svg": "3fab30f2080dd6291ac58769d294a4895f7940eb",
     "/favicon.ico": "4421bc8426e3dbe041bc57dcbc9eb55dbfcbc161",
-    "/index.html": "22c1f6b66b6a3773c7e3fa543b548bfdba046608",
-    "/main-es2015.86a0f110f8c001953466.js": "f9a775bce3516bb897f3a1cbd8fd3fc8deffa824",
-    "/main-es5.86a0f110f8c001953466.js": "9c1292575779f28333a2910c984201f3937c298f",
+    "/index.html": "c7424d9037014385c283aaf34348016310d11a6f",
+    "/main-es2015.dd981bd6cf951537c5cb.js": "2b21ac45b9b3bb2e82dcaffd91571b09d4fa75f8",
+    "/main-es5.dd981bd6cf951537c5cb.js": "989454f37cb882545e90168528a8d15b8de88c5b",
     "/manifest.webmanifest": "cd388fd80990124a500d2687ac419ea37104429c",
     "/material-icons-outlined.3cb0d2539b892774895a.woff2": "b83aec9cceb453c24574d43f1ef4fde2a40eea65",
     "/material-icons-outlined.99d2e314c507975574de.woff": "f0c6c59cdeda3ba8d764b29d621d757750acaeb8",
@@ -93,8 +95,8 @@
     "/material-icons.f044e5df83c21beda57c.woff": "7f80438ea8c888393074a581b2c03f41fd05626e",
     "/polyfills-es2015.7f2be5c3211715ed096a.js": "90fb474e1a7d87bd57bc8a95fb3fd361b919d815",
     "/polyfills-es5.28f12a96904b8f2b6d42.js": "ca429c7eb4042a26cba566edb2228959cf24ce54",
-    "/runtime-es2015.8de970e8ec626174744b.js": "4f9d184d91000b7c4c1bebc4b2486912ad659fae",
-    "/runtime-es5.8de970e8ec626174744b.js": "d6cd574ab2965536d385307432b598b02f202938",
+    "/runtime-es2015.09150c98bb8285324a9e.js": "4f059882898486f85b07fef56b4ac7c923dd678b",
+    "/runtime-es5.09150c98bb8285324a9e.js": "64957be21247f31d06dd17fc06b49d8aad104dd8",
     "/styles.b6fa236bece05381fbf1.css": "f6ef4197cfef9ff038a4a0bf15b57a8081ba4594"
   },
   "navigationUrls": [
