@@ -54,9 +54,9 @@ export class SafetyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
-      console.log("successfully deleted....");
-    });
+    // this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
+    //   console.log("successfully deleted....");
+    // });
     this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
       this.IsOnline = isonline;
       if(isonline) {
