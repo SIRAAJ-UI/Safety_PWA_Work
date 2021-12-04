@@ -18,11 +18,8 @@ export class AppComponent implements OnInit {
             this.hasInternetAccess = currentState;
             if (this.hasNetworkConnection && this.hasInternetAccess) {
                 this.isOnline = true;
-                this.accountService.SetIsOnline(true);
             } else {
                 this.isOnline = false;
-                this.accountService.SetIsOnline(false);
-
             }
         });
     }
