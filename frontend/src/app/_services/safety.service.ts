@@ -9,6 +9,8 @@ import { ReportType, SaveRecord } from '../_models/model'
 })
 export class SafetyService {
 
+  public ReportTypes:any[] = null;
+
   constructor(private httpClient: HttpClient) { }
   GetReportType(): Observable<HttpEvent<any>> {
     const getRequest: HttpRequest<any> = new HttpRequest('GET', AccountAPIUrls.GetReportType);

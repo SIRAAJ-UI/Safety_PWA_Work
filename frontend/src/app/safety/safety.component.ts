@@ -54,6 +54,9 @@ export class SafetyComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
+      console.log("successfully deleted....");
+    });
     this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
       this.IsOnline = isonline;
       if(isonline) {
@@ -88,7 +91,7 @@ export class SafetyComponent implements OnInit {
             this.ReportTypes = isActiveFlags;
             this.dbService.add('OFFLINE_RECORDS', {
               ReportTypes: this.ReportTypes
-            }).subscribe((key) => {
+            }).subscribe((key:any) => {
             });
           }
         }
@@ -174,7 +177,7 @@ export class SafetyComponent implements OnInit {
           keyboard: false,
           class: 'gray modal-md'
         });
-        this.getData(safetySaved);
+        this.getData(safetySaved).subscribe( result => {console.log("Finished")})
       }
     });
   }
@@ -189,7 +192,7 @@ export class SafetyComponent implements OnInit {
     });
     
   }
-  getData(safetySaved:Array<any>) {
+  getData(safetySaved:Array<any>):Observable<any> {
     let arrayRequest = [];
     let count = 1;
     safetySaved.forEach((element,index) => {
@@ -207,7 +210,7 @@ export class SafetyComponent implements OnInit {
         }
       }));
     });
-    forkJoin(arrayRequest)
+    return forkJoin(arrayRequest)
   }
  
   onChangeAreaLineCode() {
