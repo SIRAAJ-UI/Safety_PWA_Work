@@ -60,9 +60,9 @@ export class SafetyComponent implements OnInit {
     this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
       this.IsOnline = isonline;
       if(isonline) {
-        this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
-          console.log("successfully deleted....");
-        });
+        // this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
+        //   console.log("successfully deleted....");
+        // });
       } else {
         this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
           const [Classes,ReportTypes,AreaLines,ReportedBy] = safety;
