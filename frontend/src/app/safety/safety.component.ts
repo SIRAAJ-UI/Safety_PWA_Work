@@ -76,26 +76,6 @@ export class SafetyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
-    //   console.log("successfully deleted....");
-    // });
-    // this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
-    //   this.IsOnline = isonline;
-    //   if (isonline) {
-    //     // this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
-    //     //   console.log("successfully deleted....");
-    //     // });
-    //   } else {
-    //     this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
-    //       const [Classes, ReportTypes, AreaLines, ReportedBy] = safety;
-    //       this.ReportTypes = ReportTypes["ReportTypes"];
-    //       this.GetClass = Classes["Classes"];
-    //       this.ReportedBy = ReportedBy["ReportedBy"];
-    //       this.AreaLines = AreaLines["AreaLines"];
-    //     });
-    //   }
-    // })
-
     this.subscribes.push(
       this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
         this.IsOnline = isonline;
@@ -251,6 +231,7 @@ export class SafetyComponent implements OnInit {
     }
   }
   openForm() {
+    this.SafetyReportForm.reset();
     this.IsSafetyReportFormOpen = true;
     this.IsOnline = navigator.onLine;
   }

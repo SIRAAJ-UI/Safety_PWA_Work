@@ -79,7 +79,7 @@
             </div>
 
             <div class="form-group mb-2">
-                <label>Reported by (default logged in user)</label>
+                <label>Reported by</label>
                 <ng-select [items]="ReportedBy" bindValue="UserProfileId" bindLabel="UserName"
                     formControlName="ReportedById" (change)="onReportByChange()" dropdownPosition="bottom">
                 </ng-select>
