@@ -7,6 +7,7 @@ import { SafetyService } from '@app/_services/safety.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { forkJoin, Observable } from 'rxjs';
+import { BlockUI, NgBlockUI } from 'ng-block-ui';
 
 
 @Component({
@@ -23,12 +24,15 @@ export class SafetyComponent implements OnInit {
   public AreaLines: Array<AreaLine> = [];
   public Machines: Array<lstMachineCnfg> = [];
   public IsUnsafeDoneBy: boolean = false;
+  @BlockUI() blockUI: NgBlockUI;
+
   modalRef: BsModalRef;
   public IsOnline: boolean = true;
   @ViewChild("ErrorAlertBox") ErrorAlertBox: any;
   @ViewChild("SuccessAlertBox") SuccessAlertBox: any;
   @ViewChild("SyncAlertBox") SyncAlertBox: any;
   @ViewChild("LocalSaveSuccess") LocalSaveSuccess: any;
+  public SaveInProgress: boolean = false;
   public IsSafetyReportFormOpen: boolean = false;
   public MachinesCodeAlert: boolean = false;
 
@@ -50,20 +54,23 @@ export class SafetyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.IsOnline = navigator.onLine;
-    if(this.IsOnline){
-      this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
-        console.log(successDeleted);
-      });
-    } else {
-      this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
-        const [Classes,ReportTypes,AreaLines,ReportedBy] = safety;
-        this.ReportTypes = ReportTypes["ReportTypes"];
-        this.GetClass = Classes["Classes"];
-        this.ReportedBy = ReportedBy["ReportedBy"];
-        this.AreaLines = AreaLines["AreaLines"];
-      });
-    }
+    this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
+      this.IsOnline = isonline;
+      if(isonline) {
+        this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
+          console.log("successfully deleted....");
+        });
+      } else {
+        this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
+          const [Classes,ReportTypes,AreaLines,ReportedBy] = safety;
+          this.ReportTypes = ReportTypes["ReportTypes"];
+          this.GetClass = Classes["Classes"];
+          this.ReportedBy = ReportedBy["ReportedBy"];
+          this.AreaLines = AreaLines["AreaLines"];
+        });
+      }
+    })
+    
     this.subscribes.push(
       this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
         this.IsOnline = isonline;
@@ -167,22 +174,24 @@ export class SafetyComponent implements OnInit {
           keyboard: false,
           class: 'gray modal-md'
         });
-        this.getData(safetySaved).subscribe(val => console.log(val));
+        this.getData(safetySaved);
       }
     });
   }
 
   deleteRecordById(count:number){
       this.dbService.deleteByKey('OFFLINE_SAVE_RECORDS', count).subscribe((status) => {
-        console.log('status:', status);
-        console.log("Save Successfully");
+        this.modalRef = this.modalService.show(this.LocalSaveSuccess, {
+          backdrop: 'static',
+          keyboard: false,
+          class: 'gray modal-md'
+        });
     });
     
   }
-  getData(safetySaved:Array<any>): Observable<any> {
+  getData(safetySaved:Array<any>) {
     let arrayRequest = [];
     let count = 1;
-    let deleteRecordId = [];
     safetySaved.forEach((element,index) => {
       arrayRequest.push(this.safetyService.SaveRecord(element.SaveSafetyRecords).subscribe( response => {
         if (response.type == HttpEventType.DownloadProgress) {
@@ -198,7 +207,7 @@ export class SafetyComponent implements OnInit {
         }
       }));
     });
-    return forkJoin(arrayRequest)
+    forkJoin(arrayRequest)
   }
  
   onChangeAreaLineCode() {
@@ -221,6 +230,7 @@ export class SafetyComponent implements OnInit {
     this.IsOnline = navigator.onLine;
   }
   onSubmit() {
+    this.SaveInProgress = false;
     const {
       ReportTypeCnfgId,
       ClassCnfgId,
@@ -258,11 +268,14 @@ export class SafetyComponent implements OnInit {
         });
       });
     } else {
+    this.blockUI.start("Loading");
+
       this.safetyService.SaveRecord(saveRecord).subscribe(response => {
         if (response.type == HttpEventType.DownloadProgress) {
         } else if (response.type === HttpEventType.Response) {
           if (typeof response.body !== 'undefined' && response.body !== null) {
             const { ErrorMessage } = response.body;
+            this.blockUI.stop();
             if (ErrorMessage === null) {
               if (this.modalRef) {
                 this.modalRef.hide();
@@ -284,6 +297,8 @@ export class SafetyComponent implements OnInit {
             }
           }
         }
+      },error => {
+        this.blockUI.stop();
       })
     }
 

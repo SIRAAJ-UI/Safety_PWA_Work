@@ -34,9 +34,7 @@
         <h4 class="modal-title" id="modal-basic-title">Synchronization</h4>
     </div>
     <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-        <span class="material-icons-two-tone text-success" style="font-size: 50px;">
-            check
-        </span>
+        <img src="assets/icons/template-block.svg" alt="">
         <h5>Synchronization In Process, Please Wait ...</h5>
     </div>
     <div class="modal-footer d-flex justify-content-center">
@@ -116,7 +114,7 @@
                 <webcam-snapshot-component (UpdateBlobImages)="onUpdateFormImages($event)"></webcam-snapshot-component>
             </div>
             <div class="form-group mb-4 d-flex ">
-                <button type="submit" (click)="onSubmit()" class="btn btn-md btn-primary flex-fill">Submit</button>
+                <button [disabled]="SaveInProgress" (click)="onSubmit()" class="btn btn-md btn-primary flex-fill">Submit</button>
             </div>
         </div>
     </form>
