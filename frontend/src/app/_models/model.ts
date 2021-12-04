@@ -31,6 +31,12 @@ export class AreaLine {
     AreaLineCnfgId: number;
     AreaLineName: string;
     ActiveFlag: boolean;
+    lstMachineCnfg:Array<lstMachineCnfg>
+}
+export class lstMachineCnfg{
+    MachineCnfgId: number;
+    MachineName: string;
+    
 }
 export class Machine  {
     MachineCnfgId: number;

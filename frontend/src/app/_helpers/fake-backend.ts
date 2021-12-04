@@ -20,28 +20,26 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function handleRoute() {
             switch (true) {
-                // case url.endsWith('/users/authenticate') && method === 'POST':
-                //     return authenticate();
-                // case url.endsWith('/users') && method === 'GET':
-                //     return getUsers();
+                case url.endsWith('/1UserProfile/GetLogin') && method === 'GET':
+                    return authenticate();
                 // case url.endsWith('/ReportTypeCnfg/GetAll') && method === 'GET':
-                //     return getReportTypeCnfg();
+                //     return GetReportType();
                 // case url.endsWith('/ClassCnfg/GetAll') && method === 'GET':
-                //     return getClassCnfg();
+                //     return GetClass();
                 // case url.endsWith('/ReportTypeCnfg/GetAll') && method === 'GET':
-                //     return getReportTypeCnfg();
-                // case url.endsWith('/UserProfile') && method === 'GET':
-                //     return UserProfile();
+                //     return GetReportedBy();
+                // case url.endsWith('/UserProfile/GetAll') && method === 'GET':
+                //     return getUsers();
                 // case url.endsWith('/AreaLineCnfg/GetAll') && method === 'GET':
-                //     return getAreaLineCnfg();
+                //     return GetAreaLine();
                 // case url.endsWith('/ReportTypeCnfg/GetAll') && method === 'GET':
-                //     return getReportTypeCnfg();
-                case url.match(/\/users\/\d+$/) && method === 'GET':
-                    return getUserById();
-                case url.match(/\/users\/\d+$/) && method === 'PUT':
-                    return updateUser();
-                case url.match(/\/users\/\d+$/) && method === 'DELETE':
-                    return deleteUser();
+                //     return GetMachine();
+                // case url.match(/\/users\/\d+$/) && method === 'GET':
+                //     return getUserById();
+                // case url.match(/\/users\/\d+$/) && method === 'PUT':
+                //     return updateUser();
+                // case url.match(/\/users\/\d+$/) && method === 'DELETE':
+                //     return deleteUser();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -52,7 +50,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function authenticate() {
             const { username, password } = body;
-            const users = [{"username":"admin","password":"1"}]
+            const users = [{ "username": "sadmin", "password": "1" }]
             const user = users.find(x => x.username === username && x.password === password);
             if (!user) return error('Username or password is incorrect');
             return ok({
@@ -60,9 +58,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 token: 'fake-jwt-token'
             })
         }
-        function getReportTypeCnfg(){
-
-        }
+        
         function register() {
             const user = body
 
@@ -82,6 +78,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function GetReportType() {
+            console.log("GetReportTYpe")
             return ok([
                 { ReportId: "UA0001", "ReportType": "Unsafe Act" },
                 { ReportId: "UC0001", "ReportType": "Unsafe Conditions" },
@@ -109,7 +106,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 { Id: 4, "name": "Sridharan" },
             ])
         }
-
         function GetAreaLine() {
             return ok([
                 { Id: 1, "area": "area 1", "line": "line 1" },
@@ -118,7 +114,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 { Id: 4, "area": "area 4", "line": "line 4" },
             ])
         }
-
         function GetMachine() {
             return ok([
                 { Id: 1, "name": "Machine 1" },
@@ -137,12 +132,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
 
-
-
-
         function getUserById() {
             if (!isLoggedIn()) return unauthorized();
-
             const user = users.find(x => x.id === idFromUrl());
             return ok(user);
         }
@@ -167,7 +158,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function deleteUser() {
             if (!isLoggedIn()) return unauthorized();
-
             users = users.filter(x => x.id !== idFromUrl());
             localStorage.setItem('users', JSON.stringify(users));
             return ok();

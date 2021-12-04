@@ -1,4 +1,19 @@
-﻿<div class="card">
+﻿
+<ng-template #ErrorAlertBox let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title text-danger">Error</h4>
+    </div>
+    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+        <span class="material-icons-outlined" style="font-size: 40px; color:red">
+            report_problem
+        </span>
+        <h5 class="text-danger">UserName/Password is Invalid.</h5>
+    </div>
+    <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="btn btn-primary" style="width: 150px;" (click)="modalRef.hide()">OK</button>
+    </div>
+</ng-template>
+<div class="card">
     <h4 class="card-header">Login</h4>
     <div class="card-body">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">

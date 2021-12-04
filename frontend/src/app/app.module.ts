@@ -23,11 +23,12 @@ import { FormsModule } from '@angular/forms';;
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-  
-const dbConfig: DBConfig  = {
-    name: 'SAFETY_REPORTS',
-    version: 1,
-    objectStoresMeta: [{
+
+const dbConfig: DBConfig = {
+  name: 'SAFETY_REPORTS',
+  version: 1,
+  objectStoresMeta: [
+    {
       store: 'OFFLINE_RECORDS',
       storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
@@ -35,38 +36,44 @@ const dbConfig: DBConfig  = {
         { name: 'Classes', keypath: 'Classes', options: { unique: true } },
         { name: 'ReportedBy', keypath: 'ReportedBy', options: { unique: true } },
         { name: 'AreaLines', keypath: 'AreaLines', options: { unique: true } },
-        { name: 'Machines', keypath: 'Machines', options: { unique: true } },
       ]
-    }]
-  };
-  
+    },{
+      store: 'OFFLINE_SAVE_RECORDS',
+      storeConfig: { keyPath: 'id', autoIncrement: true },
+      storeSchema: [
+        { name: 'SaveSafetyRecords', keypath: 'SaveSafetyRecords', options: { unique: true } },
+      ]
+    }
+  ]
+};
+
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        ReactiveFormsModule,
-        FormsModule,
-        HttpClientModule,
-        AppRoutingModule,
-        SafetyModule,
-        NgSelectModule,
-        ModalModule.forRoot(),
-        NgxIndexedDBModule.forRoot(dbConfig),
-        NgbModule,
-        ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
-    ],
-    declarations: [
-        AppComponent,
-        AlertComponent,
-        HomeComponent,
-    ],
-    providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  imports: [
+    BrowserModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    SafetyModule,
+    NgSelectModule,
+    ModalModule.forRoot(),
+    NgxIndexedDBModule.forRoot(dbConfig),
+    NgbModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+  ],
+  declarations: [
+    AppComponent,
+    AlertComponent,
+    HomeComponent,
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
-        // provider used to create fake backend
-        fakeBackendProvider
-    ],
-    bootstrap: [AppComponent]
+    // provider used to create fake backend
+    fakeBackendProvider
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { };

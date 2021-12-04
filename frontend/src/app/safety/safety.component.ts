@@ -1,11 +1,12 @@
-import { HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpRequest } from '@angular/common/http';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AreaLine, GetClass, Machine, ReportType, SaveRecord, UserProfile } from '@app/_models/model';
+import { AreaLine, GetClass, lstMachineCnfg, Machine, ReportType, SaveRecord, UserProfile } from '@app/_models/model';
 import { AccountService } from '@app/_services';
 import { SafetyService } from '@app/_services/safety.service';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { forkJoin, Observable } from 'rxjs';
 
 
 @Component({
@@ -20,13 +21,16 @@ export class SafetyComponent implements OnInit {
   public GetClass: Array<GetClass>;
   public ReportedBy: Array<UserProfile>
   public AreaLines: Array<AreaLine> = [];
-  public Machines: Array<Machine> = [];
+  public Machines: Array<lstMachineCnfg> = [];
   public IsUnsafeDoneBy: boolean = false;
   modalRef: BsModalRef;
   public IsOnline: boolean = true;
   @ViewChild("ErrorAlertBox") ErrorAlertBox: any;
   @ViewChild("SuccessAlertBox") SuccessAlertBox: any;
+  @ViewChild("SyncAlertBox") SyncAlertBox: any;
+  @ViewChild("LocalSaveSuccess") LocalSaveSuccess: any;
   public IsSafetyReportFormOpen: boolean = false;
+  public MachinesCodeAlert: boolean = false;
 
   public SafetyReportForm: FormGroup = new FormGroup(
     {
@@ -42,28 +46,30 @@ export class SafetyComponent implements OnInit {
       UpdatedUserId: new FormControl('', [Validators.required]),
     });
 
-  constructor(private accountService: AccountService, private safetyService: SafetyService, private modalService: BsModalService, private dbService: NgxIndexedDBService) {
-    console.log("refresh")
+  constructor(private httpClient:HttpClient,private accountService: AccountService, private safetyService: SafetyService, private modalService: BsModalService, private dbService: NgxIndexedDBService) {
   }
 
   ngOnInit(): void {
     this.IsOnline = navigator.onLine;
-    this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
-      console.log('success? ', successDeleted);
-    });
-  
-    // if(this.IsOnline === true){
-    //   this.dbService.clear('people').subscribe((successDeleted) => {
-    //     console.log('success? ', successDeleted);
-    //   });
-    // }
-    // this.dbService.deleteDatabase().subscribe((deleted) => {
-    //   console.log('Database deleted successfully: ', deleted);
-    // });
-    
+    if(this.IsOnline){
+      this.dbService.clear('OFFLINE_RECORDS').subscribe((successDeleted) => {
+        console.log(successDeleted);
+      });
+    } else {
+      this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
+        const [Classes,ReportTypes,AreaLines,ReportedBy] = safety;
+        this.ReportTypes = ReportTypes["ReportTypes"];
+        this.GetClass = Classes["Classes"];
+        this.ReportedBy = ReportedBy["ReportedBy"];
+        this.AreaLines = AreaLines["AreaLines"];
+      });
+    }
     this.subscribes.push(
       this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
         this.IsOnline = isonline;
+        if (this.IsOnline === true) {
+          this.isCheckPendingRecords();
+        }
       }),
       this.safetyService.GetReportType().subscribe(response => {
         if (response.type == HttpEventType.DownloadProgress) {
@@ -76,7 +82,6 @@ export class SafetyComponent implements OnInit {
             this.dbService.add('OFFLINE_RECORDS', {
               ReportTypes: this.ReportTypes
             }).subscribe((key) => {
-              console.log(key)
             });
           }
         }
@@ -94,7 +99,6 @@ export class SafetyComponent implements OnInit {
             this.dbService.add('OFFLINE_RECORDS', {
               Classes: response.body
             }).subscribe((key) => {
-              console.log(key)
             });
           }
         }
@@ -112,7 +116,6 @@ export class SafetyComponent implements OnInit {
             this.dbService.add('OFFLINE_RECORDS', {
               ReportedBy: this.ReportedBy
             }).subscribe((key) => {
-              console.log(key)
             });
           }
         }
@@ -123,14 +126,13 @@ export class SafetyComponent implements OnInit {
         if (response.type == HttpEventType.DownloadProgress) {
         } else if (response.type === HttpEventType.Response) {
           if (typeof response.body !== 'undefined' && response.body !== null) {
-            const isActiveFlags = response.body.filter((item: ReportType) => {
+            const isActiveFlags = response.body.filter((item: AreaLine) => {
               return (item.ActiveFlag === true)
             })
             this.AreaLines = isActiveFlags;
             this.dbService.add('OFFLINE_RECORDS', {
               AreaLines: this.AreaLines
             }).subscribe((key) => {
-              console.log(key)
             });
           }
         }
@@ -139,13 +141,7 @@ export class SafetyComponent implements OnInit {
       })
     );
   }
-  private checkStatusIsOline() {
-    console.log("Check")
-    this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
-      console.log(safety);
-    });
-
-  }
+ 
   onUpdateFormImages(blobImages: Array<string>) {
     this.SafetyReportForm.get("ReportsImages").setValue(blobImages);
   }
@@ -162,34 +158,69 @@ export class SafetyComponent implements OnInit {
       this.IsUnsafeDoneBy = false;
     }
   }
+
+  private isCheckPendingRecords() {
+    this.dbService.getAll('OFFLINE_SAVE_RECORDS').subscribe((safetySaved: any) => {
+      if (safetySaved.length > 0) {
+        this.modalRef = this.modalService.show(this.SyncAlertBox, {
+          backdrop: 'static',
+          keyboard: false,
+          class: 'gray modal-md'
+        });
+        this.getData(safetySaved).subscribe(val => console.log(val));
+      }
+    });
+  }
+
+  deleteRecordById(count:number){
+      this.dbService.deleteByKey('OFFLINE_SAVE_RECORDS', count).subscribe((status) => {
+        console.log('status:', status);
+        console.log("Save Successfully");
+    });
+    
+  }
+  getData(safetySaved:Array<any>): Observable<any> {
+    let arrayRequest = [];
+    let count = 1;
+    let deleteRecordId = [];
+    safetySaved.forEach((element,index) => {
+      arrayRequest.push(this.safetyService.SaveRecord(element.SaveSafetyRecords).subscribe( response => {
+        if (response.type == HttpEventType.DownloadProgress) {
+        } else if (response.type === HttpEventType.Response) {
+          if (typeof response.body !== 'undefined' && response.body !== null) {
+            const { ErrorMessage } = response.body;
+            if (ErrorMessage === null) {
+              this.deleteRecordById(count);
+            } else {
+            }
+            count += 1;
+          }
+        }
+      }));
+    });
+    return forkJoin(arrayRequest)
+  }
+ 
   onChangeAreaLineCode() {
     const areaLineCode = this.SafetyReportForm.get("AreaLineCnfgId").value;
-    this.safetyService.GetMachine(areaLineCode).subscribe(response => {
-      if (response.type == HttpEventType.DownloadProgress) {
-      } else if (response.type === HttpEventType.Response) {
-        if (typeof response.body !== 'undefined' && response.body !== null) {
-          const isActiveFlags = response.body.filter((item: ReportType) => {
-            return (item.ActiveFlag === true)
-          })
-          this.Machines = isActiveFlags;
-          this.dbService.add('OFFLINE_RECORDS', {
-            Machines: this.Machines
-          }).subscribe((key) => {
-            console.log(key)
-          });
-        }
-      }
+    const filterByArea = this.AreaLines.find((arealine: any) => {
+      return (arealine.AreaLineCnfgId === areaLineCode);
     })
+    // const isActiveFlags = filterByArea.lstMachineCnfg.filter((item: any) => {
+    //    return (item.ActiveFlag === true)
+    // })
+    this.Machines = filterByArea.lstMachineCnfg;
+    if (this.Machines.length === 0) {
+      this.MachinesCodeAlert = true;
+    } else {
+      this.MachinesCodeAlert = false;
+    }
   }
   openForm() {
     this.IsSafetyReportFormOpen = true;
-    console.log(navigator.onLine);
     this.IsOnline = navigator.onLine;
-    this.checkStatusIsOline()
   }
   onSubmit() {
-    console.log(this.SafetyReportForm.value);
-
     const {
       ReportTypeCnfgId,
       ClassCnfgId,
@@ -214,41 +245,58 @@ export class SafetyComponent implements OnInit {
     saveRecord.UpdatedUserId = UpdatedUserId;
     saveRecord.ReportsImages = ReportsImages;
     saveRecord.CreatedUserId = CreatedUserId;
-    // storeName: string, value: T, key?: any
-    // this.dbService.add("people","Sirajudeen","name");
-    // this.dbService.add("people","ksiraj2002@gmail.com","email");
 
-    // this.safetyService.SaveRecord(saveRecord).subscribe(response => {
-    //   if (response.type == HttpEventType.DownloadProgress) {
-    //   } else if (response.type === HttpEventType.Response) {
-    //     if (typeof response.body !== 'undefined' && response.body !== null) {
-    //       const { ErrorMessage }  = response.body;
-    //       if(ErrorMessage === null){
-    //         if (this.modalRef) {
-    //           this.modalRef.hide();
-    //         }
-    //         this.modalRef = this.modalService.show(this.SuccessAlertBox, {
-    //           backdrop: 'static',
-    //           keyboard: false,
-    //           class: 'gray modal-md'
-    //         });
-    //       } else {
-    //         if (this.modalRef) {
-    //           this.modalRef.hide();
-    //         }
-    //         this.modalRef = this.modalService.show(this.ErrorAlertBox, {
-    //           backdrop: 'static',
-    //           keyboard: false,
-    //           class: 'gray modal-md'
-    //         });
-    //       }
-    //     }
-    //   }
-    // })
+    //Save in index DB
+    if (this.IsOnline === false) {
+      this.dbService.add('OFFLINE_SAVE_RECORDS', {
+        SaveSafetyRecords: saveRecord
+      }).subscribe((key) => {
+        this.modalRef = this.modalService.show(this.LocalSaveSuccess, {
+          backdrop: 'static',
+          keyboard: false,
+          class: 'gray modal-md'
+        });
+      });
+    } else {
+      this.safetyService.SaveRecord(saveRecord).subscribe(response => {
+        if (response.type == HttpEventType.DownloadProgress) {
+        } else if (response.type === HttpEventType.Response) {
+          if (typeof response.body !== 'undefined' && response.body !== null) {
+            const { ErrorMessage } = response.body;
+            if (ErrorMessage === null) {
+              if (this.modalRef) {
+                this.modalRef.hide();
+              }
+              this.modalRef = this.modalService.show(this.SuccessAlertBox, {
+                backdrop: 'static',
+                keyboard: false,
+                class: 'gray modal-md'
+              });
+            } else {
+              if (this.modalRef) {
+                this.modalRef.hide();
+              }
+              this.modalRef = this.modalService.show(this.ErrorAlertBox, {
+                backdrop: 'static',
+                keyboard: false,
+                class: 'gray modal-md'
+              });
+            }
+          }
+        }
+      })
+    }
+
   }
 
   goToDasboard() {
     this.modalRef.hide();
     this.IsSafetyReportFormOpen = false;
+  }
+
+  ngOnDestroy(){
+      this.subscribes.forEach( sub => {
+        sub.unsubcribes();
+      })
   }
 }

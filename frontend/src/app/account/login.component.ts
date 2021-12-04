@@ -1,21 +1,24 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AccountService, AlertService } from '@app/_services';
-
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
     form: FormGroup;
     loading = false;
     submitted = false;
     returnUrl: string;
+    modalRef: BsModalRef;
+
+    @ViewChild("ErrorAlertBox") ErrorAlertBox: any;
 
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
+        private modalService: BsModalService, 
         private accountService: AccountService,
         private alertService: AlertService
     ) { }
@@ -51,7 +54,18 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate([this.returnUrl]);
+                    if(data?.IsError === true){
+                        // const errorMessage = "UserName/Password is Invalid."
+                        this.modalRef = this.modalService.show(this.ErrorAlertBox, {
+                        backdrop: 'static',
+                        keyboard: false,
+                        class: 'gray modal-md'
+                        });
+                        // this.alertService.error(errorMessage);
+                        this.loading = false;
+                    } else {
+                        this.router.navigate([this.returnUrl]);
+                    }
                 },
                 error => {
                     this.alertService.error(error);

@@ -6,7 +6,7 @@ import { User } from './_models';
 @Component({ selector: 'app', templateUrl: 'app.component.html' })
 export class AppComponent implements OnInit {
     user: User;
-    @ViewChild("status") statusDisplay: any;
+    public isOnline: boolean = true;
 
 
     constructor(private accountService: AccountService) {
@@ -14,14 +14,15 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-        const statusDisplay = document.getElementById("status");
-        statusDisplay.textContent = window.navigator.onLine ? 'Online' : 'OFFline'
+        window.navigator.onLine ? 'Online' : 'OFFline';
+        this.isOnline = window.navigator.onLine ? true : false;
         window.addEventListener('online', () => {
-            statusDisplay.textContent = "Online"
+            this.isOnline = true;
             this.accountService.SetIsOnline(true);
+
         });
         window.addEventListener('offline', () => {
-            statusDisplay.textContent = "OFFline";
+            this.isOnline = false;
             this.accountService.SetIsOnline(false);
         });
     }
