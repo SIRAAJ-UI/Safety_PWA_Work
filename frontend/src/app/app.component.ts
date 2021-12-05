@@ -7,13 +7,18 @@ import { ConnectionService } from 'ng-connection-service';
 @Component({ selector: 'app', templateUrl: 'app.component.html' })
 export class AppComponent implements OnInit {
     user: User;
-    public isOnline: boolean = true;
+    public isOnline: boolean =  window.navigator.onLine;
     hasNetworkConnection: boolean;
     hasInternetAccess: boolean;
 
     constructor(private accountService: AccountService, private connectionService: ConnectionService) {
         this.accountService.user.subscribe(x => this.user = x);
+    }
+
+    ngOnInit() {
+        
         this.connectionService.monitor().subscribe((currentState: any) => {
+            console.log("currentState",currentState);
             this.hasNetworkConnection = currentState;
             this.hasInternetAccess = currentState;
             if (this.hasNetworkConnection && this.hasInternetAccess) {
@@ -22,14 +27,14 @@ export class AppComponent implements OnInit {
             } else {
                 this.isOnline = false;
                 this.accountService.SetIsOnline(false);
-
             }
         });
+        this.accountService.SetIsOnline(this.isOnline);
+        console.log(this.isOnline);
     }
 
-    ngOnInit() {
-    }
-
+     
+      
     logout() {
         this.accountService.logout();
     }
