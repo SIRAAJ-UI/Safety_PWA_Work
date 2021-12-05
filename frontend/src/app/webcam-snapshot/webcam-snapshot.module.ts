@@ -5,6 +5,6 @@ import { WebcamSnapshotComponent } from './webcam-snapshot-component/webcam-snap
 @NgModule({
   declarations: [WebcamSnapshotComponent],
   imports: [ CommonModule ],
-  exports:[WebcamSnapshotComponent]
+  exports:[WebcamSnapshotComponent],
 })
 export class WebcamSnapshotModuleModule { }

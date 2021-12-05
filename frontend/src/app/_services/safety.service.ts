@@ -1,7 +1,7 @@
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AccountAPIUrls } from '@app/global.urls';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { ReportType, SaveRecord } from '../_models/model'
 
 @Injectable({
@@ -10,8 +10,19 @@ import { ReportType, SaveRecord } from '../_models/model'
 export class SafetyService {
 
   public ReportTypes:any[] = null;
+  private _CaptureUpdates:Subject<any>;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { 
+    this._CaptureUpdates = new Subject();
+  }
+
+  CaptureUpdates(imageData) {
+    this._CaptureUpdates.next(imageData);
+  }
+  get ImageCaptures():Observable<any> {
+    return this._CaptureUpdates.asObservable();
+  }
+  
   GetReportType(): Observable<HttpEvent<any>> {
     const getRequest: HttpRequest<any> = new HttpRequest('GET', AccountAPIUrls.GetReportType);
     return this.httpClient.request(getRequest);
