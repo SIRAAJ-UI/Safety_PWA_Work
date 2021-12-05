@@ -1,0 +1,133 @@
+{
+  "configVersion": 1,
+  "timestamp": 1638720453580,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "/5-es2015.2e72ef318ea0c011192c.js",
+        "/5-es5.2e72ef318ea0c011192c.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main-es2015.397ecc3b3f2dfededb0a.js",
+        "/main-es5.397ecc3b3f2dfededb0a.js",
+        "/manifest.webmanifest",
+        "/polyfills-es2015.7f2be5c3211715ed096a.js",
+        "/polyfills-es5.28f12a96904b8f2b6d42.js",
+        "/runtime-es2015.1ff027ea457cdcbbfd6d.js",
+        "/runtime-es5.1ff027ea457cdcbbfd6d.js",
+        "/styles.cccff9fd8979c808ad72.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "/Poppins-Medium.9e1bb626874ed49aa343.ttf",
+        "/Poppins-Regular.8081832fc5cfbf634aa6.ttf",
+        "/assets/fonts/Poppins-Medium.ttf",
+        "/assets/fonts/Poppins-Regular.ttf",
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/icons/logo.png",
+        "/assets/icons/template-block.svg",
+        "/assets/icons/wifi.svg",
+        "/material-icons-outlined.3cb0d2539b892774895a.woff2",
+        "/material-icons-outlined.99d2e314c507975574de.woff",
+        "/material-icons-round.6d2f0cb7a39c53cb836c.woff",
+        "/material-icons-round.e8600905e57d2bfc96ec.woff2",
+        "/material-icons-sharp.cb3a74604ebb3ad2c534.woff",
+        "/material-icons-sharp.e1c8de28366630660623.woff2",
+        "/material-icons-two-tone.65c6d5572ca129d0ad3b.woff2",
+        "/material-icons-two-tone.d27ea473d49b838b2b3a.woff",
+        "/material-icons.9340a24a24a1726f5c08.woff2",
+        "/material-icons.f044e5df83c21beda57c.woff"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "api-ReportTypeCnfg",
+      "patterns": [
+        "https:\\/\\/ljasafety\\.com\\/safetyreportapi\\/api\\/ReportTypeCnfg\\/GetAll",
+        "https:\\/\\/ljasafety\\.com\\/safetyreportapi\\/api\\/ClassCnfg\\/GetAll",
+        "https:\\/\\/ljasafety\\.com\\/safetyreportapi\\/api\\/UserProfile\\/GetAll",
+        "https:\\/\\/ljasafety\\.com\\/safetyreportapi\\/api\\/AreaLineCnfg\\/GetAll",
+        "https:\\/\\/ljasafety\\.com\\/safetyreportapi\\/api\\/MachineCnfg\\/GetAllByAreaLineId"
+      ],
+      "strategy": "performance",
+      "maxSize": 100,
+      "maxAge": 266400000,
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/5-es2015.2e72ef318ea0c011192c.js": "7f67f9d995e5df8ca6d6388217a75a65e85e29d0",
+    "/5-es5.2e72ef318ea0c011192c.js": "b6e8f90cc6cbecc62a785641437c8b745c7db02d",
+    "/Poppins-Medium.9e1bb626874ed49aa343.ttf": "af7058373acbcf383dd114b8f9bbfb9faafd79eb",
+    "/Poppins-Regular.8081832fc5cfbf634aa6.ttf": "01d319c533f62ea29f03b5df8adfd4d93d2d2a38",
+    "/assets/fonts/Poppins-Medium.ttf": "af7058373acbcf383dd114b8f9bbfb9faafd79eb",
+    "/assets/fonts/Poppins-Regular.ttf": "01d319c533f62ea29f03b5df8adfd4d93d2d2a38",
+    "/assets/icons/icon-128x128.png": "73fe98237264e0ee96bf2679f7b69d7009897025",
+    "/assets/icons/icon-144x144.png": "a80e40522f1e4f75dcd5cd140cbd48d9f3d4b875",
+    "/assets/icons/icon-152x152.png": "4bbe1e7195506566d47d05c1b3c5c0efdfe4eb87",
+    "/assets/icons/icon-192x192.png": "3b4605b94a60cdd3f8e6bc00ed74d283941145e9",
+    "/assets/icons/icon-384x384.png": "2ce35a774b0b28ea4890b6668999cd76654bfd9a",
+    "/assets/icons/icon-512x512.png": "a97b2eb248761c7049140dcdd8a84fca23e4c6e2",
+    "/assets/icons/icon-72x72.png": "86b3263a68a26aa89bebf2bf677a7dfade4b3024",
+    "/assets/icons/icon-96x96.png": "8c0448400c534afb2461ee236b85e235d569527e",
+    "/assets/icons/logo.png": "954652d4345cb18e2d3a674e3888239f5f1c1a8a",
+    "/assets/icons/template-block.svg": "49ee0dd0444b770b77c10e4beac8c00d19323dc5",
+    "/assets/icons/wifi.svg": "3fab30f2080dd6291ac58769d294a4895f7940eb",
+    "/favicon.ico": "4421bc8426e3dbe041bc57dcbc9eb55dbfcbc161",
+    "/index.html": "ed6656c6cfc4f75362348fe95b5025da1f2b4de0",
+    "/main-es2015.397ecc3b3f2dfededb0a.js": "4b4a31b2441c8c850b785ca4137d2bd94cb5c947",
+    "/main-es5.397ecc3b3f2dfededb0a.js": "c52e025334732d5022a5c1e6f89f517d82ee88dc",
+    "/manifest.webmanifest": "824bb42970c4fd5140ad821653f2edf668375592",
+    "/material-icons-outlined.3cb0d2539b892774895a.woff2": "b83aec9cceb453c24574d43f1ef4fde2a40eea65",
+    "/material-icons-outlined.99d2e314c507975574de.woff": "f0c6c59cdeda3ba8d764b29d621d757750acaeb8",
+    "/material-icons-round.6d2f0cb7a39c53cb836c.woff": "3808bc85030ccb1b4b879b713616773a8bf167ce",
+    "/material-icons-round.e8600905e57d2bfc96ec.woff2": "d8e23c4b9f90ce1aeb03ae4af5ef246f935fc936",
+    "/material-icons-sharp.cb3a74604ebb3ad2c534.woff": "6d75f44908bd2119cfef21c0e179f24194fa766f",
+    "/material-icons-sharp.e1c8de28366630660623.woff2": "65cb144d2ff195053f8cb8855eb688bdc22e25ff",
+    "/material-icons-two-tone.65c6d5572ca129d0ad3b.woff2": "d879d0d211785feae07ca9542615a03ecbb32a12",
+    "/material-icons-two-tone.d27ea473d49b838b2b3a.woff": "64fa612021cdf326ea352e5ee8e955490f2198a8",
+    "/material-icons.9340a24a24a1726f5c08.woff2": "a80466bc637c657f0dc739e0924b025034a92ea9",
+    "/material-icons.f044e5df83c21beda57c.woff": "7f80438ea8c888393074a581b2c03f41fd05626e",
+    "/polyfills-es2015.7f2be5c3211715ed096a.js": "90fb474e1a7d87bd57bc8a95fb3fd361b919d815",
+    "/polyfills-es5.28f12a96904b8f2b6d42.js": "ca429c7eb4042a26cba566edb2228959cf24ce54",
+    "/runtime-es2015.1ff027ea457cdcbbfd6d.js": "742b818b678c2003efb70be96652cf2f18f9b317",
+    "/runtime-es5.1ff027ea457cdcbbfd6d.js": "82d14cfd1c133f9b3114fd474d2742c7f05c530d",
+    "/styles.cccff9fd8979c808ad72.css": "f1c4153b43210e6b6383e90b7a77be8fd8e17711"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}
