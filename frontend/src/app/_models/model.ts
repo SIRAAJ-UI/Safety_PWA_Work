@@ -56,4 +56,5 @@ export class SaveRecord {
     CreatedUserId: number;
     UpdatedUserId: number;
     ReportsImages:Array<string>;
+    CreateDate: Date;
 }

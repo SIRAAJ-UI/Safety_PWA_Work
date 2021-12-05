@@ -283,7 +283,6 @@ export class SafetyComponent implements OnInit {
     this.SafetyReportForm.reset();
     this.IsSafetyReportFormOpen = true;
     this.IsOnline = navigator.onLine;
-    
   }
   onSubmit() {
     this.SaveInProgress = false;
@@ -311,6 +310,7 @@ export class SafetyComponent implements OnInit {
     saveRecord.UpdatedUserId = UpdatedUserId;
     saveRecord.ReportsImages = ReportsImages;
     saveRecord.CreatedUserId = CreatedUserId;
+    saveRecord.CreateDate = new Date();
 
     //Save in index DB
     if (this.IsOnline === false) {
