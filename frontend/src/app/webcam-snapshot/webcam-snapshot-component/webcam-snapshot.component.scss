@@ -54,4 +54,9 @@ input[type="file"] {
     display: inline-block;
     cursor: pointer;
 }
-
+.camera-icons {
+  color:#F1B14F;
+  &:hover {
+      color:#FF7C6D;
+  }
+}
