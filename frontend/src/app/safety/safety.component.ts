@@ -38,6 +38,7 @@ export class SafetyComponent implements OnInit {
   public MachinesCodeAlert: boolean = false;
   hasNetworkConnection: boolean;
   hasInternetAccess: boolean;
+  public RecordCount: number = 0;
   public SafetyReportForm: FormGroup = new FormGroup(
     {
       ReportTypeCnfgId: new FormControl("", [Validators.required]),
@@ -74,6 +75,7 @@ export class SafetyComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkOfflineRecordCount();
     this.checkOnlineStatus();
     this.subscribes.push(
       this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
@@ -96,10 +98,7 @@ export class SafetyComponent implements OnInit {
                 });
               }
             });
-            // this.dbService.add('OFFLINE_RECORDS', {
-            //   ReportTypes: this.ReportTypes
-            // }).subscribe((key: any) => {
-            // });
+          
           }
         }
       }, error => {
@@ -173,6 +172,11 @@ export class SafetyComponent implements OnInit {
     );
   }
 
+  private checkOfflineRecordCount() {
+    this.dbService.count('OFFLINE_SAVE_RECORDS').subscribe((recordCount) => { 
+      this.RecordCount = recordCount;
+    })
+  }
   private checkOnlineStatus() {
     if (this.IsOnline === true) {
       this.isCheckPendingRecords();
@@ -231,11 +235,7 @@ export class SafetyComponent implements OnInit {
 
   deleteRecordById(count: number) {
     this.dbService.deleteByKey('OFFLINE_SAVE_RECORDS', count).subscribe((status) => {
-      // this.modalRef = this.modalService.show(this.LocalSaveSuccess, {
-      //   backdrop: 'static',
-      //   keyboard: false,
-      //   class: 'gray modal-md'
-      // });
+     
     });
 
   }
@@ -252,6 +252,7 @@ export class SafetyComponent implements OnInit {
               this.deleteRecordById(element.id);
               if(count === safetySaved.length){
                 this.modalRef.hide();
+                this.checkOfflineRecordCount()
               }
             } else {
             }
@@ -322,6 +323,7 @@ export class SafetyComponent implements OnInit {
           class: 'gray modal-md'
         });
       });
+      this.checkOfflineRecordCount();
     } else {
       this.blockUI.start("Loading");
 

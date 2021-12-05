@@ -30,6 +30,11 @@ html,body {
     background-color:#F7F7F7;
     overflow-x: hidden;
 }
+body
+{
+  overscroll-behavior-y: contain;
+}
+
 
 .card-header{
     font-size: 16px;
