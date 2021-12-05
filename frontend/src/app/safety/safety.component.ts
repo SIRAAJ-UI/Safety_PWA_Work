@@ -91,14 +91,14 @@ export class SafetyComponent implements OnInit {
             })
             this.ReportTypes = isActiveFlags;
             this.dbService.count('OFFLINE_RECORDS').subscribe((recordCount) => {
-              if(recordCount < 5){
+              if (recordCount < 5) {
                 this.dbService.add('OFFLINE_RECORDS', {
                   ReportTypes: this.ReportTypes
                 }).subscribe((key) => {
                 });
               }
             });
-          
+
           }
         }
       }, error => {
@@ -113,7 +113,7 @@ export class SafetyComponent implements OnInit {
             })
             this.GetClass = isActiveFlags;
             this.dbService.count('OFFLINE_RECORDS').subscribe((recordCount) => {
-              if(recordCount < 5){
+              if (recordCount < 5) {
                 this.dbService.add('OFFLINE_RECORDS', {
                   Classes: this.GetClass
                 }).subscribe((key) => {
@@ -133,9 +133,9 @@ export class SafetyComponent implements OnInit {
               return (item.ActiveFlag === true)
             })
             this.ReportedBy = isActiveFlags;
-          
+
             this.dbService.count('OFFLINE_RECORDS').subscribe((recordCount) => {
-              if(recordCount < 5){
+              if (recordCount < 5) {
                 this.dbService.add('OFFLINE_RECORDS', {
                   ReportedBy: this.ReportedBy
                 }).subscribe((key) => {
@@ -156,14 +156,14 @@ export class SafetyComponent implements OnInit {
             })
             this.AreaLines = isActiveFlags;
             this.dbService.count('OFFLINE_RECORDS').subscribe((recordCount) => {
-              if(recordCount < 5){
+              if (recordCount < 5) {
                 this.dbService.add('OFFLINE_RECORDS', {
-                    AreaLines: this.AreaLines
+                  AreaLines: this.AreaLines
                 }).subscribe((key) => {
                 });
               }
             });
-          
+
           }
         }
       }, error => {
@@ -173,7 +173,7 @@ export class SafetyComponent implements OnInit {
   }
 
   private checkOfflineRecordCount() {
-    this.dbService.count('OFFLINE_SAVE_RECORDS').subscribe((recordCount) => { 
+    this.dbService.count('OFFLINE_SAVE_RECORDS').subscribe((recordCount) => {
       this.RecordCount = recordCount;
     })
   }
@@ -197,9 +197,7 @@ export class SafetyComponent implements OnInit {
           if(keyfind === "AreaLines"){
             this.AreaLines = item[keyfind];
           }
-
         })
-       
       });
     }
   }
@@ -235,7 +233,7 @@ export class SafetyComponent implements OnInit {
 
   deleteRecordById(count: number) {
     this.dbService.deleteByKey('OFFLINE_SAVE_RECORDS', count).subscribe((status) => {
-     
+
     });
 
   }
@@ -250,7 +248,7 @@ export class SafetyComponent implements OnInit {
             const { ErrorMessage } = response.body;
             if (ErrorMessage === null) {
               this.deleteRecordById(element.id);
-              if(count === safetySaved.length){
+              if (count === safetySaved.length) {
                 this.modalRef.hide();
                 this.checkOfflineRecordCount()
               }

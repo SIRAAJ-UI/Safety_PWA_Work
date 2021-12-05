@@ -25,5 +25,22 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "api-ReportTypeCnfg",
+      "urls": [
+        "https://ljasafety.com/safetyreportapi/api/ReportTypeCnfg/GetAll",
+        "https://ljasafety.com/safetyreportapi/api/ClassCnfg/GetAll",
+        "https://ljasafety.com/safetyreportapi/api/UserProfile/GetAll",
+        "https://ljasafety.com/safetyreportapi/api/AreaLineCnfg/GetAll",
+        "https://ljasafety.com/safetyreportapi/api/MachineCnfg/GetAllByAreaLineId"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 100,
+        "maxAge": "3d2h"
+      }
+    }
   ]
 }
