@@ -28,7 +28,7 @@ export class SafetyComponent implements OnInit {
   @BlockUI() blockUI: NgBlockUI;
 
   modalRef: BsModalRef;
-  public IsOnline: boolean = true;
+  public IsOnline: boolean = window.navigator.onLine;
   @ViewChild("ErrorAlertBox") ErrorAlertBox: any;
   @ViewChild("SuccessAlertBox") SuccessAlertBox: any;
   @ViewChild("SyncAlertBox") SyncAlertBox: any;
@@ -36,10 +36,8 @@ export class SafetyComponent implements OnInit {
   public SaveInProgress: boolean = false;
   public IsSafetyReportFormOpen: boolean = false;
   public MachinesCodeAlert: boolean = false;
-  public isOnline: boolean = true;
   hasNetworkConnection: boolean;
   hasInternetAccess: boolean;
-
   public SafetyReportForm: FormGroup = new FormGroup(
     {
       ReportTypeCnfgId: new FormControl("", [Validators.required]),
@@ -59,37 +57,28 @@ export class SafetyComponent implements OnInit {
       this.hasNetworkConnection = currentState;
       this.hasInternetAccess = currentState;
       if (this.hasNetworkConnection && this.hasInternetAccess) {
-        this.isOnline = true;
-        console.log("ONLINE");
+        this.IsOnline = true;
       } else {
-        this.isOnline = false;
+        this.IsOnline = false;
         console.log("OFFLINE");
         this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
-          const [Classes, ReportTypes, AreaLines, ReportedBy] = safety;
-          this.ReportTypes = ReportTypes["ReportTypes"];
-          this.GetClass = Classes["Classes"];
-          this.ReportedBy = ReportedBy["ReportedBy"];
-          this.AreaLines = AreaLines["AreaLines"];
+          console.log(safety)
+          // const [Classes, ReportTypes, AreaLines, ReportedBy] = safety;
+          // this.ReportTypes = ReportTypes["ReportTypes"];
+          // this.GetClass = Classes["Classes"];
+          // this.ReportedBy = ReportedBy["ReportedBy"];
+          // this.AreaLines = AreaLines["AreaLines"];
         });
       }
     });
   }
 
   ngOnInit(): void {
+    this.checkOnlineStatus();
     this.subscribes.push(
       this.accountService.getOnlineStatus().subscribe((isonline: boolean) => {
         this.IsOnline = isonline;
-        if (this.IsOnline === true) {
-          this.isCheckPendingRecords();
-        } else {
-          this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
-            const [Classes, ReportTypes, AreaLines, ReportedBy] = safety;
-            this.ReportTypes = ReportTypes["ReportTypes"];
-            this.GetClass = Classes["Classes"];
-            this.ReportedBy = ReportedBy["ReportedBy"];
-            this.AreaLines = AreaLines["AreaLines"];
-          });
-        }
+        this.checkOnlineStatus();
       }),
       this.safetyService.GetReportType().subscribe(response => {
         if (response.type == HttpEventType.DownloadProgress) {
@@ -99,10 +88,18 @@ export class SafetyComponent implements OnInit {
               return (item.ActiveFlag === true)
             })
             this.ReportTypes = isActiveFlags;
-            this.dbService.add('OFFLINE_RECORDS', {
-              ReportTypes: this.ReportTypes
-            }).subscribe((key: any) => {
+            this.dbService.count('OFFLINE_RECORDS').subscribe((recordCount) => {
+              if(recordCount < 5){
+                this.dbService.add('OFFLINE_RECORDS', {
+                  ReportTypes: this.ReportTypes
+                }).subscribe((key) => {
+                });
+              }
             });
+            // this.dbService.add('OFFLINE_RECORDS', {
+            //   ReportTypes: this.ReportTypes
+            // }).subscribe((key: any) => {
+            // });
           }
         }
       }, error => {
@@ -116,9 +113,13 @@ export class SafetyComponent implements OnInit {
               return (item.ActiveFlag === true)
             })
             this.GetClass = isActiveFlags;
-            this.dbService.add('OFFLINE_RECORDS', {
-              Classes: response.body
-            }).subscribe((key) => {
+            this.dbService.count('OFFLINE_RECORDS').subscribe((recordCount) => {
+              if(recordCount < 5){
+                this.dbService.add('OFFLINE_RECORDS', {
+                  Classes: this.GetClass
+                }).subscribe((key) => {
+                });
+              }
             });
           }
         }
@@ -133,9 +134,14 @@ export class SafetyComponent implements OnInit {
               return (item.ActiveFlag === true)
             })
             this.ReportedBy = isActiveFlags;
-            this.dbService.add('OFFLINE_RECORDS', {
-              ReportedBy: this.ReportedBy
-            }).subscribe((key) => {
+          
+            this.dbService.count('OFFLINE_RECORDS').subscribe((recordCount) => {
+              if(recordCount < 5){
+                this.dbService.add('OFFLINE_RECORDS', {
+                  ReportedBy: this.ReportedBy
+                }).subscribe((key) => {
+                });
+              }
             });
           }
         }
@@ -150,10 +156,15 @@ export class SafetyComponent implements OnInit {
               return (item.ActiveFlag === true)
             })
             this.AreaLines = isActiveFlags;
-            this.dbService.add('OFFLINE_RECORDS', {
-              AreaLines: this.AreaLines
-            }).subscribe((key) => {
+            this.dbService.count('OFFLINE_RECORDS').subscribe((recordCount) => {
+              if(recordCount < 5){
+                this.dbService.add('OFFLINE_RECORDS', {
+                    AreaLines: this.AreaLines
+                }).subscribe((key) => {
+                });
+              }
             });
+          
           }
         }
       }, error => {
@@ -162,6 +173,32 @@ export class SafetyComponent implements OnInit {
     );
   }
 
+  private checkOnlineStatus() {
+    if (this.IsOnline === true) {
+      this.isCheckPendingRecords();
+    } else {
+      this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
+        let valueSlice = safety.splice(0,4);
+        valueSlice.forEach( item => {
+          const keyfind = Object.keys(item)[0];
+          if(keyfind === "ReportTypes"){
+            this.ReportTypes = item[keyfind];
+          }
+          if(keyfind === "Classes"){
+            this.GetClass = item[keyfind];
+          }
+          if(keyfind === "ReportedBy"){
+            this.ReportedBy = item[keyfind];
+          }
+          if(keyfind === "AreaLines"){
+            this.AreaLines = item[keyfind];
+          }
+
+        })
+       
+      });
+    }
+  }
   onUpdateFormImages(blobImages: Array<string>) {
     this.SafetyReportForm.get("ReportsImages").setValue(blobImages);
   }
@@ -187,18 +224,18 @@ export class SafetyComponent implements OnInit {
           keyboard: false,
           class: 'gray modal-md'
         });
-        this.getData(safetySaved).subscribe(result => { console.log("Finished") })
+        this.getData(safetySaved);
       }
     });
   }
 
   deleteRecordById(count: number) {
     this.dbService.deleteByKey('OFFLINE_SAVE_RECORDS', count).subscribe((status) => {
-      this.modalRef = this.modalService.show(this.LocalSaveSuccess, {
-        backdrop: 'static',
-        keyboard: false,
-        class: 'gray modal-md'
-      });
+      // this.modalRef = this.modalService.show(this.LocalSaveSuccess, {
+      //   backdrop: 'static',
+      //   keyboard: false,
+      //   class: 'gray modal-md'
+      // });
     });
 
   }
@@ -212,7 +249,10 @@ export class SafetyComponent implements OnInit {
           if (typeof response.body !== 'undefined' && response.body !== null) {
             const { ErrorMessage } = response.body;
             if (ErrorMessage === null) {
-              this.deleteRecordById(count);
+              this.deleteRecordById(element.id);
+              if(count === safetySaved.length){
+                this.modalRef.hide();
+              }
             } else {
             }
             count += 1;
