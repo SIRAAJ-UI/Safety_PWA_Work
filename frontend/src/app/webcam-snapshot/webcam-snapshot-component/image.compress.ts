@@ -1,7 +1,7 @@
 import { SafetyService } from "@app/_services/safety.service";
 
 const MAX_WIDTH = 600;
-const MAX_HEIGHT = 302;
+const MAX_HEIGHT = 600;
 const MIME_TYPE = "image/jpeg";
 const QUALITY = 0.7;
 
