@@ -10,12 +10,19 @@ import { ConnectionService } from 'ng-connection-service';
 })
 export class NavbarComponent implements OnInit {
 
-  user: User;
+  user: any;
+  AssignedReportUrl: string = "";
+  ReportedReportUrl: string = "";
+
     public isOnline: boolean = window.navigator.onLine;
     hasNetworkConnection: boolean;
     hasInternetAccess: boolean;
     constructor(private accountService: AccountService, private connectionService: ConnectionService) {
-        this.accountService.user.subscribe(x => this.user = x);
+        this.accountService.user.subscribe(x => {
+            this.user = x;
+            this.AssignedReportUrl = `https://ljasafety.com/safetyadmin/#/reports/${this.user?.UserName}`;
+            this.ReportedReportUrl = `https://ljasafety.com/safetyadmin/#/reportsreported/${this.user?.UserName}`;
+        });
     }
 
     ngOnInit() {
