@@ -33,12 +33,15 @@ export class SafetyComponent implements OnInit {
   @ViewChild("SuccessAlertBox") SuccessAlertBox: any;
   @ViewChild("SyncAlertBox") SyncAlertBox: any;
   @ViewChild("LocalSaveSuccess") LocalSaveSuccess: any;
+  @ViewChild("ErrorValidation") ErrorValidation: any;
+
   public SaveInProgress: boolean = false;
   public IsSafetyReportFormOpen: boolean = false;
   public MachinesCodeAlert: boolean = false;
   hasNetworkConnection: boolean;
   hasInternetAccess: boolean;
   public RecordCount: number = 0;
+  public user:any;
   public SafetyReportForm: FormGroup = new FormGroup(
     {
       ReportTypeCnfgId: new FormControl("", [Validators.required]),
@@ -46,14 +49,25 @@ export class SafetyComponent implements OnInit {
       ReportedById: new FormControl("", [Validators.required]),
       AreaLineCnfgId: new FormControl("", [Validators.required]),
       MachineCnfgId: new FormControl("", [Validators.required]),
-      UnsafeActDoneBy: new FormControl("", [Validators.required]),
+      UnsafeActDoneBy: new FormControl(""),
       Description: new FormControl("", [Validators.required]),
       ReportsImages: new FormControl([], [Validators.required]),
+      StatusFlag: new FormControl(''),
+      StatusId: new FormControl(''),
+      ActionDetail: new FormControl(''),
       CreatedUserId: new FormControl('', [Validators.required]),
       UpdatedUserId: new FormControl('', [Validators.required]),
     });
 
   constructor(private connectionService: ConnectionService, private accountService: AccountService, private safetyService: SafetyService, private modalService: BsModalService, private dbService: NgxIndexedDBService) {
+    this.accountService.user.subscribe(x => 
+      {
+        this.user = x;
+        this.UpdateDefaultUser();
+      }
+    );
+   
+
     this.connectionService.monitor().subscribe((currentState: any) => {
       this.hasNetworkConnection = currentState;
       this.hasInternetAccess = currentState;
@@ -61,14 +75,8 @@ export class SafetyComponent implements OnInit {
         this.IsOnline = true;
       } else {
         this.IsOnline = false;
-        console.log("OFFLINE");
         this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
-          console.log(safety)
-          // const [Classes, ReportTypes, AreaLines, ReportedBy] = safety;
-          // this.ReportTypes = ReportTypes["ReportTypes"];
-          // this.GetClass = Classes["Classes"];
-          // this.ReportedBy = ReportedBy["ReportedBy"];
-          // this.AreaLines = AreaLines["AreaLines"];
+         
         });
       }
     });
@@ -172,6 +180,17 @@ export class SafetyComponent implements OnInit {
     );
   }
 
+  private UpdateDefaultUser(){
+    this.SafetyReportForm.get("CreatedUserId").setValue(this.user.UserProfileId);
+    this.SafetyReportForm.get("UpdatedUserId").setValue(this.user.UserProfileId);
+    this.SafetyReportForm.get("ReportedById").setValue(this.user.UserProfileId);
+    console.log(this.user)
+    if(this.IsUnsafeDoneBy === false){
+      this.SafetyReportForm.get("UnsafeActDoneBy").clearValidators();
+      this.SafetyReportForm.get("UnsafeActDoneBy").updateValueAndValidity()
+    }
+    
+  }
   private checkOfflineRecordCount() {
     this.dbService.count('OFFLINE_SAVE_RECORDS').subscribe((recordCount) => {
       this.RecordCount = recordCount;
@@ -204,20 +223,37 @@ export class SafetyComponent implements OnInit {
   onUpdateFormImages(blobImages: Array<string>) {
     this.SafetyReportForm.get("ReportsImages").setValue(blobImages);
   }
-  onReportByChange() {
-    const ReportedTypeId = this.SafetyReportForm.get("ReportedById").value;
-    this.SafetyReportForm.get("CreatedUserId").setValue(ReportedTypeId);
-    this.SafetyReportForm.get("UpdatedUserId").setValue(ReportedTypeId);
-  }
+  // onReportByChange() {
+  //   const ReportedTypeId = this.SafetyReportForm.get("ReportedById").value;
+  //   this.SafetyReportForm.get("CreatedUserId").setValue(ReportedTypeId);
+  //   this.SafetyReportForm.get("UpdatedUserId").setValue(ReportedTypeId);
+  // }
   onReportTypeChange() {
     const ReportTypeId = this.SafetyReportForm.get("ReportTypeCnfgId").value;
     if (ReportTypeId === 1) {
       this.IsUnsafeDoneBy = true;
+      this.SafetyReportForm.get("UnsafeActDoneBy").setValidators(Validators.required);
+      this.SafetyReportForm.get("UnsafeActDoneBy").updateValueAndValidity()
     } else {
       this.IsUnsafeDoneBy = false;
+      this.SafetyReportForm.get("UnsafeActDoneBy").clearValidators();
+      this.SafetyReportForm.get("UnsafeActDoneBy").updateValueAndValidity()
     }
   }
 
+  onChangeStatusId($event){
+    if(this.SafetyReportForm.get("StatusFlag").value === true){
+      this.SafetyReportForm.get("StatusId").setValue(1);
+      this.SafetyReportForm.get("ActionDetail").setValue("");
+      this.SafetyReportForm.get("ActionDetail").clearValidators();
+      this.SafetyReportForm.get("ActionDetail").updateValueAndValidity()
+    } else {
+      this.SafetyReportForm.get("StatusId").setValue(4);
+      this.SafetyReportForm.get("ActionDetail").setValidators(Validators.required);
+      this.SafetyReportForm.get("ActionDetail").updateValueAndValidity()
+    }
+
+  }
   private isCheckPendingRecords() {
     this.dbService.getAll('OFFLINE_SAVE_RECORDS').subscribe((safetySaved: any) => {
       if (safetySaved.length > 0) {
@@ -233,7 +269,6 @@ export class SafetyComponent implements OnInit {
 
   deleteRecordById(count: number) {
     this.dbService.deleteByKey('OFFLINE_SAVE_RECORDS', count).subscribe((status) => {
-
     });
 
   }
@@ -279,6 +314,7 @@ export class SafetyComponent implements OnInit {
   }
   openForm() {
     this.SafetyReportForm.reset();
+    this.UpdateDefaultUser();
     this.IsSafetyReportFormOpen = true;
     this.IsOnline = navigator.onLine;
   }
@@ -290,12 +326,28 @@ export class SafetyComponent implements OnInit {
       ReportedById,
       AreaLineCnfgId,
       MachineCnfgId,
+      StatusId,
+      StatusFlag,
       UnsafeActDoneBy,
       Description,
+      ActionDetail,
       CreatedUserId,
       UpdatedUserId,
       ReportsImages
     } = this.SafetyReportForm.value;
+
+    if(!this.SafetyReportForm.valid){
+      if(this.modalRef){
+        this.modalRef.hide()
+      }
+      this.modalRef = this.modalService.show(this.ErrorValidation, {
+        backdrop: 'static',
+        keyboard: false,
+        class: 'gray modal-md'
+      });
+      return false;
+    }
+
     const saveRecord: SaveRecord = new SaveRecord();
     saveRecord.ReportTypeCnfgId = ReportTypeCnfgId;
     saveRecord.ClassCnfgId = ClassCnfgId;
@@ -303,6 +355,10 @@ export class SafetyComponent implements OnInit {
     saveRecord.AreaLineCnfgId = AreaLineCnfgId;
     saveRecord.MachineCnfgId = MachineCnfgId;
     saveRecord.UnsafeActDoneBy = UnsafeActDoneBy;
+
+    saveRecord.StatusId = StatusId;
+    saveRecord.ActionDetail = ActionDetail;
+
     saveRecord.Description = Description;
     saveRecord.CreatedUserId = Description;
     saveRecord.UpdatedUserId = UpdatedUserId;

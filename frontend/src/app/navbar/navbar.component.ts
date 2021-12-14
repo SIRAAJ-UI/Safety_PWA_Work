@@ -1,16 +1,19 @@
-﻿import { Component, OnInit, ViewChild } from '@angular/core';
-import { AccountService } from './_services';
-import { User } from './_models';
+import { Component, OnInit } from '@angular/core';
+import { User } from '@app/_models';
+import { AccountService } from '@app/_services';
 import { ConnectionService } from 'ng-connection-service';
 
+@Component({
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss']
+})
+export class NavbarComponent implements OnInit {
 
-@Component({ selector: 'app', templateUrl: 'app.component.html' })
-export class AppComponent implements OnInit {
-    user: User;
-    public isOnline: boolean =  window.navigator.onLine;
+  user: User;
+    public isOnline: boolean = window.navigator.onLine;
     hasNetworkConnection: boolean;
     hasInternetAccess: boolean;
-
     constructor(private accountService: AccountService, private connectionService: ConnectionService) {
         this.accountService.user.subscribe(x => this.user = x);
     }
@@ -28,12 +31,10 @@ export class AppComponent implements OnInit {
             }
         });
         this.accountService.SetIsOnline(this.isOnline);
-        console.log(this.isOnline);
     }
 
-     
-      
     logout() {
         this.accountService.logout();
     }
+
 }

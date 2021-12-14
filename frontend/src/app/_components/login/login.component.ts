@@ -4,7 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AccountService, AlertService } from '@app/_services';
-@Component({ templateUrl: 'login.component.html' })
+
+@Component({ templateUrl: 'login.component.html', styleUrls: ['./login.component.scss'] })
 export class LoginComponent implements OnInit {
     form: FormGroup;
     loading = false;
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
-        private modalService: BsModalService, 
+        private modalService: BsModalService,
         private accountService: AccountService,
         private alertService: AlertService
     ) { }
@@ -31,8 +32,6 @@ export class LoginComponent implements OnInit {
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        console.log("this.returnUrl");
-        console.log(this.returnUrl);
     }
 
     // convenience getter for easy access to form fields
@@ -48,23 +47,23 @@ export class LoginComponent implements OnInit {
         if (this.form.invalid) {
             return;
         }
-
         this.loading = true;
         this.accountService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
             .subscribe(
                 data => {
-                    if(data?.IsError === true){
+                    if (data?.IsError === true) {
                         // const errorMessage = "UserName/Password is Invalid."
                         this.modalRef = this.modalService.show(this.ErrorAlertBox, {
-                        backdrop: 'static',
-                        keyboard: false,
-                        class: 'gray modal-md'
+                            backdrop: 'static',
+                            keyboard: false,
+                            class: 'gray modal-md'
                         });
-                        // this.alertService.error(errorMessage);
                         this.loading = false;
+                        return false;
                     } else {
-                        this.router.navigate([this.returnUrl]);
+                        // this.router.navigate([this.returnUrl]);
+                        this.router.navigate(["/home"]);
                     }
                 },
                 error => {

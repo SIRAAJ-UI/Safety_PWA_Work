@@ -53,6 +53,8 @@ export class SaveRecord {
     MachineCnfgId: number;
     UnsafeActDoneBy: string;
     Description: string;
+    StatusId: string;
+    ActionDetail: string;
     CreatedUserId: number;
     UpdatedUserId: number;
     ReportsImages:Array<string>;

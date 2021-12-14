@@ -1,6 +1,5 @@
 ﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // used to create fake backend
@@ -10,7 +9,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_components';
-import { HomeComponent } from './home';;
+import { HomeComponent } from './home';
+import { LoginComponent } from './_components/login/login.component';
+
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SafetyModule } from './safety/safety.module';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
@@ -19,10 +20,11 @@ import { BlockUIModule } from 'ng-block-ui';
 import { BlockTemplateCmp } from './_components/block-template/block-template.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';;
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';;
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { ConnectionService } from 'ng-connection-service';
+import { ConnectionService } from 'ng-connection-service';;
+import { NavbarComponent } from './navbar/navbar.component'
 
 const dbConfig: DBConfig = {
   name: 'SAFETY_REPORTS',
@@ -51,8 +53,8 @@ const dbConfig: DBConfig = {
 @NgModule({
   imports: [
     BrowserModule,
-    ReactiveFormsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
     SafetyModule,
@@ -68,6 +70,8 @@ const dbConfig: DBConfig = {
     AlertComponent,
     BlockTemplateCmp,
     HomeComponent,
+    LoginComponent,
+    NavbarComponent
   ],
   entryComponents: [
      BlockTemplateCmp
