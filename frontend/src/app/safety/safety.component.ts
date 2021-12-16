@@ -247,12 +247,13 @@ export class SafetyComponent implements OnInit {
   onChangeStatusId($event){
     if(this.SafetyReportForm.get("StatusFlag").value === true){
       this.SafetyReportForm.get("StatusId").setValue(1);
-      this.SafetyReportForm.get("ActionDetail").setValue("");
-      this.SafetyReportForm.get("ActionDetail").clearValidators();
+      this.SafetyReportForm.get("ActionDetail").setValidators(Validators.required);
       this.SafetyReportForm.get("ActionDetail").updateValueAndValidity()
+     
     } else {
       this.SafetyReportForm.get("StatusId").setValue(4);
-      this.SafetyReportForm.get("ActionDetail").setValidators(Validators.required);
+      this.SafetyReportForm.get("ActionDetail").setValue(null);
+      this.SafetyReportForm.get("ActionDetail").clearValidators();
       this.SafetyReportForm.get("ActionDetail").updateValueAndValidity()
     }
 
@@ -339,6 +340,7 @@ export class SafetyComponent implements OnInit {
       ReportsImages
     } = this.SafetyReportForm.value;
 
+    console.log(this.SafetyReportForm.valid);
     if(!this.SafetyReportForm.valid){
       if(this.modalRef){
         this.modalRef.hide()

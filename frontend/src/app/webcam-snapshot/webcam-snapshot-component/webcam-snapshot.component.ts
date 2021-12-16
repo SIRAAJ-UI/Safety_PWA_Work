@@ -13,6 +13,7 @@ export class WebcamSnapshotComponent implements OnInit {
   @ViewChild("canvas")
   public canvas: ElementRef;
   @ViewChild("AlertBox") AlertBox: any;
+  @ViewChild("ErrorInImages") ErrorInImages: any;
   @Output("UpdateBlobImages") UpdateBlobImages:EventEmitter<Array<string>> = new EventEmitter();
   public captureIndex: number = 0;
   public selectedCaptureId: number = null;
@@ -27,8 +28,20 @@ export class WebcamSnapshotComponent implements OnInit {
   ngOnInit() {
     this.subscribes.push(
       this.safetyService.ImageCaptures.subscribe( result => {
-        this.captures.push(result);
-        this.UpdateBlobImages.emit(this.captures);
+        if(this.captures.length <3){
+          this.captures.push(result);
+          this.UpdateBlobImages.emit(this.captures);
+        } else {
+          if (this.modalRef) {
+            this.modalRef.hide();
+          }
+          this.modalRef = this.modalService.show(this.ErrorInImages, {
+            backdrop: 'static',
+            keyboard: false,
+            class: 'gray modal-md'
+          });
+        }
+      
       })
     )
   }
