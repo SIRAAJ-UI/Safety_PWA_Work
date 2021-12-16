@@ -98,14 +98,7 @@
             <div class="form-group mb-2">
                 <label>Reported by: <b>{{user?.UserName}}</b></label>
             </div>
-            <div class="form-group mb-2 d-flex align-items-center" style="margin-left:6px">
-                <input id="actionrequired" type="checkbox" formControlName="StatusFlag" (change)="onChangeStatusId($event)" />
-                <label for="actionrequired" style="margin-left: 10px;">Action Completed</label>
-            </div>
-            <div class="form-group mb-4" *ngIf="SafetyReportForm.get('StatusFlag').value === true">
-                <label for="actiondetail"><span class="text-danger">*</span>Action Detail</label>
-                <textarea class="form-control" id="actiondetail" rows="3" formControlName="ActionDetail"></textarea>
-            </div>
+           
 
             <div class="form-group mb-2">
                 <label>Area / Line</label>
@@ -128,6 +121,14 @@
             <div class="form-group mb-4">
                 <label for="desc">Description</label>
                 <textarea class="form-control" id="desc" rows="3" formControlName="Description"></textarea>
+            </div>
+            <div class="form-group mb-2 d-flex align-items-center" style="margin-left:6px">
+                <input id="actionrequired" type="checkbox" formControlName="StatusFlag" (change)="onChangeStatusId($event)" />
+                <label for="actionrequired" style="margin-left: 10px;">Action Completed</label>
+            </div>
+            <div class="form-group mb-4" *ngIf="SafetyReportForm.get('StatusFlag').value === true">
+                <label for="actiondetail"><span class="text-danger">*</span>Action Detail</label>
+                <textarea class="form-control" id="actiondetail" rows="3" formControlName="ActionDetail"></textarea>
             </div>
             <div class="form-group mb-4">
                 <webcam-snapshot-component (UpdateBlobImages)="onUpdateFormImages($event)"></webcam-snapshot-component>
