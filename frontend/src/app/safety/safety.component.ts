@@ -31,6 +31,9 @@ export class SafetyComponent implements OnInit {
   public IsOnline: boolean = window.navigator.onLine;
   @ViewChild("ErrorAlertBox") ErrorAlertBox: any;
   @ViewChild("SuccessAlertBox") SuccessAlertBox: any;
+  @ViewChild("ErrorInImagesAlertBox") ErrorInImages: any;
+
+  
   @ViewChild("SyncAlertBox") SyncAlertBox: any;
   @ViewChild("LocalSaveSuccess") LocalSaveSuccess: any;
   @ViewChild("ErrorValidation") ErrorValidation: any;
@@ -340,6 +343,14 @@ export class SafetyComponent implements OnInit {
       if(this.modalRef){
         this.modalRef.hide()
       }
+      if(!this.SafetyReportForm.get("ReportsImages").valid){
+        this.modalRef = this.modalService.show(this.ErrorInImages, {
+          backdrop: 'static',
+          keyboard: false,
+          class: 'gray modal-md'
+        });
+        return false;
+      }
       this.modalRef = this.modalService.show(this.ErrorValidation, {
         backdrop: 'static',
         keyboard: false,
@@ -391,6 +402,7 @@ export class SafetyComponent implements OnInit {
               if (this.modalRef) {
                 this.modalRef.hide();
               }
+              // this.SafetyReportForm.reset();
               this.modalRef = this.modalService.show(this.SuccessAlertBox, {
                 backdrop: 'static',
                 keyboard: false,
