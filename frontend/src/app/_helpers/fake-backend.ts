@@ -78,7 +78,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function GetReportType() {
-            console.log("GetReportTYpe")
             return ok([
                 { ReportId: "UA0001", "ReportType": "Unsafe Act" },
                 { ReportId: "UC0001", "ReportType": "Unsafe Conditions" },

@@ -9,12 +9,14 @@ import { User } from '@app/_models';
 @Injectable({ providedIn: 'root' })
 export class AccountService {
     private userSubject: BehaviorSubject<User>;
+    private _activate: Subject<any>;
     public user: Observable<User>;
     private _isOnline: Subject<boolean>;
     constructor(
         private router: Router,
         private http: HttpClient
     ) {
+        this._activate = new Subject();
         this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
         this.user = this.userSubject.asObservable();
         this._isOnline = new Subject();
@@ -27,6 +29,15 @@ export class AccountService {
     SetIsOnline( isOnline:boolean ){
         this._isOnline.next(isOnline);
     }
+
+    DoActivate(isactivate:boolean){
+        this._activate.next(isactivate);
+    }
+
+    public get IsActivate():Observable<boolean>{
+        return this._activate.asObservable()
+    }
+    
 
     getOnlineStatus():Observable<boolean>{
         return this._isOnline.asObservable();
@@ -44,6 +55,7 @@ export class AccountService {
 
     logout() {
         // remove user from local storage and set current user to null
+        this.DoActivate(false);
         localStorage.removeItem('user');
         this.userSubject.next(null);
         location.reload(true);

@@ -3,13 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // used to create fake backend
-import { fakeBackendProvider } from './_helpers';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { AppComponent } from './app.component';
 import { AlertComponent } from './_components';
-import { HomeComponent } from './home';
 import { LoginComponent } from './_components/login/login.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -24,7 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';;
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { ConnectionService } from 'ng-connection-service';;
-import { NavbarComponent } from './navbar/navbar.component'
+import { NavbarComponent } from './navbar/navbar.component';
+import { SafetyReportPageComponent } from './safety-report-page/safety-report-page.component'
 
 const dbConfig: DBConfig = {
   name: 'SAFETY_REPORTS',
@@ -69,9 +68,9 @@ const dbConfig: DBConfig = {
     AppComponent,
     AlertComponent,
     BlockTemplateCmp,
-    HomeComponent,
     LoginComponent,
-    NavbarComponent
+    NavbarComponent,
+    SafetyReportPageComponent
   ],
   entryComponents: [
      BlockTemplateCmp

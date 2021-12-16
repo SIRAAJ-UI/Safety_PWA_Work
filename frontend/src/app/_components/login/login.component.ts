@@ -63,7 +63,11 @@ export class LoginComponent implements OnInit {
                         return false;
                     } else {
                         // this.router.navigate([this.returnUrl]);
-                        this.router.navigate(["/home"]);
+                        this.accountService.IsActivate.subscribe( result => {
+                            this.router.navigate(["/home"]);
+                        })
+                        this.accountService.DoActivate(true);
+                       
                     }
                 },
                 error => {

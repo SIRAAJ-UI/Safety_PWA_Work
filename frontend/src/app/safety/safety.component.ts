@@ -9,6 +9,7 @@ import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { forkJoin, Observable } from 'rxjs';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { ConnectionService } from 'ng-connection-service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,14 +27,11 @@ export class SafetyComponent implements OnInit {
   public Machines: Array<lstMachineCnfg> = [];
   public IsUnsafeDoneBy: boolean = false;
   @BlockUI() blockUI: NgBlockUI;
-
   modalRef: BsModalRef;
   public IsOnline: boolean = window.navigator.onLine;
   @ViewChild("ErrorAlertBox") ErrorAlertBox: any;
   @ViewChild("SuccessAlertBox") SuccessAlertBox: any;
   @ViewChild("ErrorInImagesAlertBox") ErrorInImages: any;
-
-  
   @ViewChild("SyncAlertBox") SyncAlertBox: any;
   @ViewChild("LocalSaveSuccess") LocalSaveSuccess: any;
   @ViewChild("ErrorValidation") ErrorValidation: any;
@@ -62,7 +60,7 @@ export class SafetyComponent implements OnInit {
       UpdatedUserId: new FormControl('', [Validators.required]),
     });
 
-  constructor(private connectionService: ConnectionService, private accountService: AccountService, private safetyService: SafetyService, private modalService: BsModalService, private dbService: NgxIndexedDBService) {
+  constructor(private route:Router,private connectionService: ConnectionService, private accountService: AccountService, private safetyService: SafetyService, private modalService: BsModalService, private dbService: NgxIndexedDBService) {
     this.accountService.user.subscribe(x => 
       {
         this.user = x;
@@ -86,6 +84,7 @@ export class SafetyComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     this.checkOfflineRecordCount();
     this.checkOnlineStatus();
     this.subscribes.push(
@@ -109,7 +108,6 @@ export class SafetyComponent implements OnInit {
                 });
               }
             });
-
           }
         }
       }, error => {
@@ -144,7 +142,6 @@ export class SafetyComponent implements OnInit {
               return (item.ActiveFlag === true)
             })
             this.ReportedBy = isActiveFlags;
-
             this.dbService.count('OFFLINE_RECORDS').subscribe((recordCount) => {
               if (recordCount < 5) {
                 this.dbService.add('OFFLINE_RECORDS', {
@@ -174,7 +171,6 @@ export class SafetyComponent implements OnInit {
                 });
               }
             });
-
           }
         }
       }, error => {
@@ -187,7 +183,6 @@ export class SafetyComponent implements OnInit {
     this.SafetyReportForm.get("CreatedUserId").setValue(this.user.UserProfileId);
     this.SafetyReportForm.get("UpdatedUserId").setValue(this.user.UserProfileId);
     this.SafetyReportForm.get("ReportedById").setValue(this.user.UserProfileId);
-    console.log(this.user)
     if(this.IsUnsafeDoneBy === false){
       this.SafetyReportForm.get("UnsafeActDoneBy").clearValidators();
       this.SafetyReportForm.get("UnsafeActDoneBy").updateValueAndValidity()
@@ -256,7 +251,6 @@ export class SafetyComponent implements OnInit {
       this.SafetyReportForm.get("ActionDetail").clearValidators();
       this.SafetyReportForm.get("ActionDetail").updateValueAndValidity()
     }
-
   }
   private isCheckPendingRecords() {
     this.dbService.getAll('OFFLINE_SAVE_RECORDS').subscribe((safetySaved: any) => {
@@ -274,7 +268,6 @@ export class SafetyComponent implements OnInit {
   deleteRecordById(count: number) {
     this.dbService.deleteByKey('OFFLINE_SAVE_RECORDS', count).subscribe((status) => {
     });
-
   }
   getData(safetySaved: Array<any>): Observable<any> {
     let arrayRequest = [];
@@ -289,7 +282,7 @@ export class SafetyComponent implements OnInit {
               this.deleteRecordById(element.id);
               if (count === safetySaved.length) {
                 this.modalRef.hide();
-                this.checkOfflineRecordCount()
+                this.checkOfflineRecordCount();
               }
             } else {
             }
@@ -310,6 +303,7 @@ export class SafetyComponent implements OnInit {
     //    return (item.ActiveFlag === true)
     // })
     this.Machines = filterByArea.lstMachineCnfg;
+    // this.Machines = isActiveFlags;
     if (this.Machines.length === 0) {
       this.MachinesCodeAlert = true;
     } else {
@@ -340,7 +334,6 @@ export class SafetyComponent implements OnInit {
       ReportsImages
     } = this.SafetyReportForm.value;
 
-    console.log(this.SafetyReportForm.valid);
     if(!this.SafetyReportForm.valid){
       if(this.modalRef){
         this.modalRef.hide()
@@ -368,10 +361,8 @@ export class SafetyComponent implements OnInit {
     saveRecord.AreaLineCnfgId = AreaLineCnfgId;
     saveRecord.MachineCnfgId = MachineCnfgId;
     saveRecord.UnsafeActDoneBy = UnsafeActDoneBy;
-
     saveRecord.StatusId = StatusId;
     saveRecord.ActionDetail = ActionDetail;
-
     saveRecord.Description = Description;
     saveRecord.CreatedUserId = Description;
     saveRecord.UpdatedUserId = UpdatedUserId;
@@ -389,11 +380,11 @@ export class SafetyComponent implements OnInit {
           keyboard: false,
           class: 'gray modal-md'
         });
+        this.route.navigate(["/home"]);
       });
       this.checkOfflineRecordCount();
     } else {
       this.blockUI.start("Loading");
-
       this.safetyService.SaveRecord(saveRecord).subscribe(response => {
         if (response.type == HttpEventType.DownloadProgress) {
         } else if (response.type === HttpEventType.Response) {
@@ -404,7 +395,6 @@ export class SafetyComponent implements OnInit {
               if (this.modalRef) {
                 this.modalRef.hide();
               }
-              // this.SafetyReportForm.reset();
               this.modalRef = this.modalService.show(this.SuccessAlertBox, {
                 backdrop: 'static',
                 keyboard: false,
@@ -431,12 +421,11 @@ export class SafetyComponent implements OnInit {
 
   goToDasboard() {
     this.modalRef.hide();
-    this.IsSafetyReportFormOpen = false;
   }
 
   ngOnDestroy() {
     this.subscribes.forEach(sub => {
-      sub.unsubcribes();
+      sub.unsubscribe();
     })
   }
 }

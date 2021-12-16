@@ -4,14 +4,14 @@ import { SafetyComponent } from './safety.component';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import {  WebcamSnapshotModuleModule } from '../webcam-snapshot/webcam-snapshot.module'
-
+import { WebcamSnapshotComponent } from '@app/webcam-snapshot/webcam-snapshot.component';
+import { RouterModule } from '@angular/router'
 
 @NgModule({
-  declarations: [SafetyComponent],
+  declarations: [SafetyComponent, WebcamSnapshotComponent],
   imports: [
-    CommonModule,NgSelectModule,WebcamSnapshotModuleModule,ReactiveFormsModule,FormsModule
+    CommonModule, NgSelectModule, RouterModule, ReactiveFormsModule, FormsModule
   ],
-  exports:[SafetyComponent]
+  exports: [SafetyComponent]
 })
 export class SafetyModule { }

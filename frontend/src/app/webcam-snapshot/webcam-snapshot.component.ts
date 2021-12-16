@@ -1,4 +1,4 @@
-import {  Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import {  Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { SafetyService } from '@app/_services/safety.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ImageCompress } from './image.compress';
@@ -8,7 +8,7 @@ import { ImageCompress } from './image.compress';
   templateUrl: './webcam-snapshot.component.html',
   styleUrls: ['./webcam-snapshot.component.scss']
 })
-export class WebcamSnapshotComponent implements OnInit {
+export class WebcamSnapshotComponent implements OnInit,OnDestroy {
 
   @ViewChild("canvas")
   public canvas: ElementRef;
@@ -17,6 +17,11 @@ export class WebcamSnapshotComponent implements OnInit {
   @Output("UpdateBlobImages") UpdateBlobImages:EventEmitter<Array<string>> = new EventEmitter();
   public captureIndex: number = 0;
   public selectedCaptureId: number = null;
+  @Input("Reset") set ResetPhotos(value:boolean){
+    if(value === true){
+
+    }
+  }
   captures: any[] = [];
   error: any;
   isCaptured: boolean;
@@ -45,30 +50,13 @@ export class WebcamSnapshotComponent implements OnInit {
       })
     )
   }
-  ngOnDestory(){
-    this.subscribes.forEach( sub => {
-      sub.unsubcribes();
-    })
-  }
+ 
   validateFileType(event) {
     this.imageCompress.onCustomImageLoad(event.target.files[0]);
     // this.Main(event.target.files[0])
   }
 
   
-  // toBase64 = file => new Promise((resolve, reject) => {
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
-  //   reader.onload = () => resolve(reader.result);
-  //   reader.onerror = error => reject(error);
-  // });
-
-  // async Main(file) {
-  //   const blob:any = await this.toBase64(file)
-  //   let data = { id: ++this.captureIndex, source:blob,file:file}
-  //   this.captures.push(data);
-  //   this.UpdateBlobImages.emit(this.captures);
-  // }
 
   onDeleteImage(captureId: number) {
     this.selectedCaptureId = captureId;
@@ -93,6 +81,12 @@ export class WebcamSnapshotComponent implements OnInit {
   noToDelete() {
     this.selectedCaptureId = null;
     this.modalRef.hide();
+  }
+  ngOnDestroy(){
+    this.subscribes.forEach(sub => {
+      sub.unsubscribe();
+    })
+    
   }
 }
 
