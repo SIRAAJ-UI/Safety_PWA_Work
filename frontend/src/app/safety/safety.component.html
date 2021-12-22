@@ -134,6 +134,7 @@
             <div class="form-group mb-4 d-flex">
                 <button [disabled]="SaveInProgress" (click)="onSubmit()" class="btn btn-md btn-primary flex-fill">Submit</button>
             </div>
+            RecordCount{{RecordCount}}
             <div *ngIf="RecordCount>0" class="p-2 alert-warning">The application is Offline. There are {{RecordCount}} records required to be syncronized.</div>
         </div>
     </form>
