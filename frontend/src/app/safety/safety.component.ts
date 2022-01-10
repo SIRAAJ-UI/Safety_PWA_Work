@@ -26,8 +26,8 @@ export class SafetyComponent implements OnInit {
   public AreaLines: Array<AreaLine> = [];
   public Machines: Array<lstMachineCnfg> = [];
   public IsUnsafeDoneBy: boolean = false;
-  @BlockUI() blockUI: NgBlockUI;
   modalRef: BsModalRef;
+  @BlockUI() blockUI: NgBlockUI;
   public IsOnline: boolean = window.navigator.onLine;
   @ViewChild("ErrorAlertBox") ErrorAlertBox: any;
   @ViewChild("SuccessAlertBox") SuccessAlertBox: any;
@@ -58,7 +58,7 @@ export class SafetyComponent implements OnInit {
       ActionDetail: new FormControl(''),
       CreatedUserId: new FormControl('', [Validators.required]),
       UpdatedUserId: new FormControl('', [Validators.required]),
-    });
+  });
 
   constructor(private route: Router, private connectionService: ConnectionService, private accountService: AccountService, private safetyService: SafetyService, private modalService: BsModalService, private dbService: NgxIndexedDBService) {
     this.accountService.user.subscribe(x => {
@@ -74,7 +74,6 @@ export class SafetyComponent implements OnInit {
       } else {
         this.IsOnline = false;
         this.dbService.getAll('OFFLINE_RECORDS').subscribe((safety) => {
-
         });
       }
     });
@@ -212,6 +211,12 @@ export class SafetyComponent implements OnInit {
   private checkOfflineRecordCount() {
     this.dbService.count('OFFLINE_SAVE_RECORDS').subscribe((recordCount) => {
       this.RecordCount = recordCount;
+      console.log(this.RecordCount);
+      if(this.RecordCount === 0){
+        if(this.modalRef){
+          this.modalRef.hide();
+        }
+      }
     })
   }
   private checkOnlineStatus() {
@@ -288,7 +293,6 @@ export class SafetyComponent implements OnInit {
   deleteRecordById(count: number) {
     this.dbService.deleteByKey('OFFLINE_SAVE_RECORDS', count).subscribe((status) => {
       console.log("Delete ALL");
-
     });
   }
   getData(safetySaved: Array<any>): Observable<any> {
@@ -300,14 +304,10 @@ export class SafetyComponent implements OnInit {
         } else if (response.type === HttpEventType.Response) {
           if (typeof response.body !== 'undefined' && response.body !== null) {
             const { ErrorMessage } = response.body;
-            console.log("ErrorMessage");
-            console.log(ErrorMessage);
-
             if (ErrorMessage === null) {
               this.deleteRecordById(element.id);
               console.log("Count",count);
               console.log("safetySaved.length",safetySaved.length);
-
               if (count === safetySaved.length) {
                 this.modalRef.hide();
                 this.checkOfflineRecordCount();
@@ -353,7 +353,6 @@ export class SafetyComponent implements OnInit {
       AreaLineCnfgId,
       MachineCnfgId,
       StatusId,
-      StatusFlag,
       UnsafeActDoneBy,
       Description,
       ActionDetail,
@@ -397,8 +396,6 @@ export class SafetyComponent implements OnInit {
     saveRecord.ReportsImages = ReportsImages;
     saveRecord.CreatedUserId = CreatedUserId;
     saveRecord.CreateDate = new Date();
-
-
 
     this.blockUI.start("Loading");
     this.safetyService.SaveRecord(saveRecord).subscribe(response => {
