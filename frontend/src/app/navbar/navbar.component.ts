@@ -1,6 +1,5 @@
-import { ThrowStmt } from '@angular/compiler';
-import { Component, HostListener, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AccountService } from '@app/_services';
 import { ConnectionService } from 'ng-connection-service';
 
@@ -45,8 +44,8 @@ export class NavbarComponent implements OnInit {
             }
            
             this.isLoggedIn = true;
-            this.AssignedReportUrl = `https://ljasafety.com/safetyadmin/#/reports/${this.user?.UserName}`;
-            this.ReportedReportUrl = `https://ljasafety.com/safetyadmin/#/reportsreported/${this.user?.UserName}`;
+            this.AssignedReportUrl = `https://ljasafety.com/safetyadmin/#/login/${this.user.UserProfileId}`;
+            this.ReportedReportUrl = `https://ljasafety.com/safetyadmin/#/login/${this.user.UserProfileId}`;
         });
         this.connectionService.monitor().subscribe((currentState: any) => {
             this.hasNetworkConnection = currentState;
