@@ -42,10 +42,11 @@ export class NavbarComponent implements OnInit {
                     return false;
                 }
             }
-           
+            let users = (JSON.parse(localStorage.getItem('user')));
+            const { Token } = users;
             this.isLoggedIn = true;
-            this.AssignedReportUrl = `https://ljasafety.com/safetyadmin/#/login/${this.user.UserProfileId}`;
-            this.ReportedReportUrl = `https://ljasafety.com/safetyadmin/#/login/${this.user.UserProfileId}`;
+            this.AssignedReportUrl = `https://ljasafety.com/safetyadmin/#/login/${this.user.UserProfileId}/${Token}`;
+            this.ReportedReportUrl = `https://ljasafety.com/safetyadmin/#/login/${this.user.UserProfileId}/${Token}`;
         });
         this.connectionService.monitor().subscribe((currentState: any) => {
             this.hasNetworkConnection = currentState;
@@ -59,6 +60,7 @@ export class NavbarComponent implements OnInit {
             }
         });
         this.accountService.SetIsOnline(this.isOnline);
+
     }
 
     logout() {

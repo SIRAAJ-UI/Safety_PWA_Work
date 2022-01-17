@@ -206,12 +206,11 @@ export class SafetyComponent implements OnInit {
       this.SafetyReportForm.get("UnsafeActDoneBy").clearValidators();
       this.SafetyReportForm.get("UnsafeActDoneBy").updateValueAndValidity()
     }
-
   }
+  
   private checkOfflineRecordCount() {
     this.dbService.count('OFFLINE_SAVE_RECORDS').subscribe((recordCount) => {
       this.RecordCount = recordCount;
-      console.log(this.RecordCount);
       if(this.RecordCount === 0){
         if(this.modalRef){
           this.modalRef.hide();
