@@ -58,8 +58,10 @@
             <div class="d-flex flex-column justify-content-end"
                 style="position: absolute;background-color: white;width: 100%;z-index:1001">
                 <a class="nav-item nav-link text-end" (click)="showmenu = false" [routerLink]="['/home']">Home</a>
-                <a class="nav-item nav-link text-end"  (click)="showmenu = false" [href]="AssignedReportUrl" target="_blank">Assigned Reports</a>
-                <a class="nav-item nav-link text-end"(click)="showmenu = false" [href]="ReportedReportUrl" target="_blank">Reported Reports</a>
+                <a class="nav-item nav-link text-end" [href]="AssignedReportUrl" target="_blank">Assigned Tasks</a>
+                <a class="nav-item nav-link text-end" [href]="ReportedReportUrl" target="_blank">Your Reports</a>
+                <!-- <a class="nav-item nav-link text-end"   [href]="AssignedReportUrl" target="_blank">Assigned Reports</a> -->
+                <!-- <a class="nav-item nav-link text-end"(click)="showmenu = false" [href]="ReportedReportUrl" target="_blank">Reported Reports</a> -->
                 <a class="nav-item nav-link text-end" (click)="logout()">Logout</a>
             </div>
         </div>

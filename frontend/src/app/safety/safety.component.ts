@@ -265,12 +265,12 @@ export class SafetyComponent implements OnInit {
 
   onChangeStatusId($event) {
     if (this.SafetyReportForm.get("StatusFlag").value === true) {
-      this.SafetyReportForm.get("StatusId").setValue(1);
+      this.SafetyReportForm.get("StatusId").setValue(4);
       this.SafetyReportForm.get("ActionDetail").setValidators(Validators.required);
       this.SafetyReportForm.get("ActionDetail").updateValueAndValidity()
 
     } else {
-      this.SafetyReportForm.get("StatusId").setValue(4);
+      this.SafetyReportForm.get("StatusId").setValue(1);
       this.SafetyReportForm.get("ActionDetail").setValue(null);
       this.SafetyReportForm.get("ActionDetail").clearValidators();
       this.SafetyReportForm.get("ActionDetail").updateValueAndValidity()
@@ -305,8 +305,7 @@ export class SafetyComponent implements OnInit {
             const { ErrorMessage } = response.body;
             if (ErrorMessage === null) {
               this.deleteRecordById(element.id);
-              console.log("Count",count);
-              console.log("safetySaved.length",safetySaved.length);
+              
               if (count === safetySaved.length) {
                 this.modalRef.hide();
                 this.checkOfflineRecordCount();
@@ -395,7 +394,6 @@ export class SafetyComponent implements OnInit {
     saveRecord.ReportsImages = ReportsImages;
     saveRecord.CreatedUserId = CreatedUserId;
     saveRecord.CreateDate = new Date();
-
     this.blockUI.start("Loading");
     this.safetyService.SaveRecord(saveRecord).subscribe(response => {
       if (response.type == HttpEventType.DownloadProgress) {
