@@ -45,8 +45,8 @@ export class NavbarComponent implements OnInit {
             let users = (JSON.parse(localStorage.getItem('user')));
             const { Token } = users;
             this.isLoggedIn = true;
-            this.AssignedReportUrl = `https://ljasafety.com/safetyadmin/#/login/${this.user.UserProfileId}/${Token}`;
-            this.ReportedReportUrl = `https://ljasafety.com/safetyadmin/#/login/${this.user.UserProfileId}/${Token}`;
+            this.AssignedReportUrl = `https://ljasafety.com/safetyadmin/#/login/1/${this.user.UserProfileId}/${Token}`;
+            this.ReportedReportUrl = `https://ljasafety.com/safetyadmin/#/login/2/${this.user.UserProfileId}/${Token}`;
         });
         this.connectionService.monitor().subscribe((currentState: any) => {
             this.hasNetworkConnection = currentState;
