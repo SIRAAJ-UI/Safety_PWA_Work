@@ -21,8 +21,11 @@ jobs:
         uses: actions/checkout@v4
       - run: |
           echo 'Checkout repository successfully'
-          npm install            # Install packages
           working-directory: frontend
+          echo "Working directory path assigned successfully"
+          echo "Npm install successfully started."
+          npm install            # Install packages
+          echo "npm install successfully finished"
           npm run build          # Build Angular app
 
       # Step 3: Print build file path
