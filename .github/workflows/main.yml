@@ -26,6 +26,16 @@ jobs:
         run: npm install
         working-directory: frontend
 
+      # Step 4: Build Angular App inside frontend folder
+      - name: Build Angular App
+        run: npm run build -- --configuration production
+        working-directory: frontend
+
+      # Step 5: List dist folder files
+      - name: Show dist folder files
+        run: ls -R dist/
+        working-directory: frontend
+
 
           
       # # Step 2: Checkout repository code
