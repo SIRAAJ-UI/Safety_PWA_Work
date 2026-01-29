@@ -16,20 +16,32 @@ jobs:
       # Step 1: Checkout repository code
       - run: |
           echo "Hello World!"
-      # Step 2: Checkout repository code
-      - name: Checkout code
+      
+      # Step 2: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - run: |
-          echo 'Checkout repository successfully'
-          echo "Working directory path assigned successfully"
-          echo "Npm install successfully started."
-          npm install            # Install packages
-          # echo "npm install successfully finished"
-          # npm run build          # Build Angular app
-      working-directory: frontend
-      # # Step 3: Print build file path
-      # - name: List dist folder files
-      #   run: ls -R dist/
+
+      # Step 3: Install Dependencies inside frontend folder
+      - name: Install Dependencies
+        run: npm install
+        working-directory: frontend
+
+
+          
+      # # Step 2: Checkout repository code
+      # - name: Checkout code
+      #   uses: actions/checkout@v4
+      # - run: |
+      #     echo 'Checkout repository successfully'
+      #     echo "Working directory path assigned successfully"
+      #     echo "Npm install successfully started."
+      #     npm install            # Install packages
+      #     # echo "npm install successfully finished"
+      #     # npm run build          # Build Angular app
+      # working-directory: frontend
+      # # # Step 3: Print build file path
+      # # - name: List dist folder files
+      # #   run: ls -R dist/
 
           
           
