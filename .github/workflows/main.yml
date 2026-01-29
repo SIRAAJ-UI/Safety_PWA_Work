@@ -22,7 +22,7 @@ jobs:
       - run: |
           echo 'Checkout repository successfully'
           npm install            # Install packages
-          working-directory: source
+          working-directory: frontend
           npm run build          # Build Angular app
 
       # Step 3: Print build file path
