@@ -24,13 +24,14 @@ jobs:
           echo "Working directory path assigned successfully"
           echo "Npm install successfully started."
           npm install            # Install packages
-          echo "npm install successfully finished"
-          npm run build          # Build Angular app
           working-directory: frontend
+          # echo "npm install successfully finished"
+          # npm run build          # Build Angular app
+          
 
-      # Step 3: Print build file path
-      - name: List dist folder files
-        run: ls -R dist/
+      # # Step 3: Print build file path
+      # - name: List dist folder files
+      #   run: ls -R dist/
 
           
           
